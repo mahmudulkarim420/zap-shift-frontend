@@ -1,5 +1,6 @@
 import { Geist } from "next/font/google";
 import "./globals.css";
+import AuthProvider from "../providers/AuthProvider";
 import LayoutClient from "./LayoutClient";
 
 const geistSans = Geist({
@@ -17,7 +18,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} antialiased`}>
-        <LayoutClient>{children}</LayoutClient>
+        <AuthProvider>
+          <LayoutClient>{children}</LayoutClient>
+        </AuthProvider>
       </body>
     </html>
   );

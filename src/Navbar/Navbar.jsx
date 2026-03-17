@@ -1,20 +1,27 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaArrowRight, FaBars, FaTimes } from 'react-icons/fa';
 import logo from '@/app/assets/logo.png';
 import Image from 'next/image';
+import { AuthContext } from '../providers/AuthProvider';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isRegistered, setIsRegistered] = useState(false);
+  const { user, logout } = useContext(AuthContext);
   const pathname = usePathname();
 
-  useEffect(() => {
-    setIsRegistered(localStorage.getItem('isRegistered') === 'true');
-  }, []);
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        console.log('Logged out successfully');
+      })
+      .catch((error) => {
+        console.error('Logout error:', error.message);
+      });
+  };
 
   useEffect(() => {
     setIsOpen(false);
@@ -68,20 +75,48 @@ const Navbar = () => {
 
         {/* Desktop Buttons */}
         <div className="hidden items-center gap-4 lg:flex">
-          {isRegistered ? (
-            <Link
-              href="/login"
-              className="rounded-xl border border-gray-300 px-4 py-2 text-gray-500 transition hover:bg-gray-50"
-            >
-              Sign In
-            </Link>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                {user.photoURL ? (
+                  <Image
+                    src={user.photoURL}
+                    alt={user.displayName}
+                    width={32}
+                    height={32}
+                    className="rounded-full border border-gray-200"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-primary text-black flex items-center justify-center font-bold text-xs">
+                    {user.displayName?.charAt(0) || user.email?.charAt(0)}
+                  </div>
+                )}
+                <span className="text-sm font-semibold text-gray-700">
+                  {user.displayName || user.email.split('@')[0]}
+                </span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="rounded-xl border border-gray-300 px-4 py-2 text-gray-500 transition hover:bg-gray-50"
+              >
+                Logout
+              </button>
+            </div>
           ) : (
-            <Link
-              href="/register"
-              className="rounded-xl border border-gray-300 px-4 py-2 text-gray-500 transition hover:bg-gray-50"
-            >
-              Sign Up
-            </Link>
+            <>
+              <Link
+                href="/login"
+                className="rounded-xl border border-gray-300 px-4 py-2 text-gray-500 transition hover:bg-gray-50"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/register"
+                className="rounded-xl border border-gray-300 px-4 py-2 text-gray-500 transition hover:bg-gray-50"
+              >
+                Sign Up
+              </Link>
+            </>
           )}
 
           <Link
@@ -126,22 +161,45 @@ const Navbar = () => {
           </ul>
 
           <div className="mt-4 flex flex-col gap-3">
-            {isRegistered ? (
-              <Link
-                href="/login"
-                onClick={() => setIsOpen(false)}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
-              >
-                Sign In
-              </Link>
+            {user ? (
+              <>
+                <div className="flex items-center gap-3 px-4 py-2">
+                  <div className="w-10 h-10 rounded-full bg-primary text-black flex items-center justify-center font-bold">
+                    {user.displayName?.charAt(0) || user.email?.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-gray-800">
+                      {user.displayName || user.email.split('@')[0]}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate max-w-[150px]">
+                      {user.email}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
-              <Link
-                href="/register"
-                onClick={() => setIsOpen(false)}
-                className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
-              >
-                Sign Up
-              </Link>
+              <>
+                <Link
+                  href="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
+                >
+                  Sign Up
+                </Link>
+              </>
             )}
 
             <Link
