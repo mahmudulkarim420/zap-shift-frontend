@@ -44,7 +44,6 @@ const Navbar = () => {
     { href: '/coverage', label: 'Coverage' },
     { href: '/about', label: 'About Us' },
     { href: '/pricing', label: 'Pricing' },
-    { href: '/rider', label: 'Be a Rider' },
   ];
 
   return (

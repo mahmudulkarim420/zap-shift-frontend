@@ -57,7 +57,7 @@ const BrandLogo = () => {
       </div>
 
       {/* Divider */}
-      <div className="mt-14 sm:mt-16 lg:mt-20 px-4 sm:px-8 lg:px-12">
+      <div className="mt-14 sm:mt-16 lg:mt-20">
         <hr className="border-dashed border-secondary/30" />
       </div>
     </section>

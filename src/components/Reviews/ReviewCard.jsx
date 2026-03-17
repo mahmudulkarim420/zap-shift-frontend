@@ -5,7 +5,7 @@ const ReviewCard = ({ review }) => {
   return (
     <div className="bg-white rounded-3xl shadow-lg p-10 mb-20">
       {/* Quote Icon */}
-      <img src={quoteImg} alt="Quote" className="w-8 h-8 mb-3" />
+      <Image src={quoteImg} alt="Quote" className="w-8 h-8 mb-3" />
 
       {/* Review Text */}
       <p className="text-gray-600 text-sm leading-relaxed mb-5">

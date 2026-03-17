@@ -25,7 +25,7 @@ const infoItems = [
 
 const Info = () => {
   return (
-    <section className="px-4 sm:px-8 lg:px-12">
+    <section>
 
       {/* Section Header */}
       <div className="mb-10 sm:mb-12">

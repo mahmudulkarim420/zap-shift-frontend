@@ -35,7 +35,7 @@ const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section className="px-4 sm:px-8 lg:px-12">
+    <section>
 
       {/* Section Header */}
       <div className="max-w-2xl mx-auto text-center mb-10 sm:mb-12">

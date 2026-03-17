@@ -30,63 +30,74 @@ const services = [
 
 const OurServices = () => {
   return (
-    <section className="bg-secondary rounded-2xl sm:rounded-3xl px-5 py-12 sm:px-12 sm:py-16 lg:px-20 lg:py-20">
+    <section className="relative overflow-hidden rounded-[28px] bg-secondary px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+      {/* Background glow */}
+      <div className="pointer-events-none absolute -left-20 top-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
 
-      {/* Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
-        <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-3">
-          What We Offer
-        </p>
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
-          Our Services
-        </h2>
-        <p className="text-white/70 text-sm sm:text-base leading-relaxed">
-          Fast, reliable parcel delivery with real-time tracking and zero hassle.
-          From personal packages to business shipments — we deliver on time, every time.
-        </p>
-      </div>
+      <div className="relative">
+        {/* Section Header */}
+        <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-14 lg:mb-16">
+          <p className="mb-3 inline-block rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary sm:text-sm">
+            What We Offer
+          </p>
 
-      {/* Services Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
-        {services.map((service, index) => (
-          <div
-            key={index}
-            className="group relative bg-white/5 border border-white/10 backdrop-blur-sm
-                       rounded-2xl p-6 sm:p-7 overflow-hidden
-                       hover:bg-primary hover:border-primary
-                       transition-all duration-300 ease-in-out hover:shadow-2xl"
-          >
-            {/* Watermark index */}
-            <span className="absolute top-4 right-5 text-6xl font-black text-white/5
-                             group-hover:text-black/10 transition-colors duration-300
-                             select-none leading-none">
-              {String(index + 1).padStart(2, '0')}
-            </span>
+          <h2 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl lg:text-4xl xl:text-5xl">
+            Our <span className="text-primary">Services</span>
+          </h2>
 
-            {/* Icon */}
-            <div className="relative w-12 h-12 mb-5 bg-white/10 group-hover:bg-black/10
-                            rounded-xl flex items-center justify-center
-                            transition-colors duration-300">
-              <Image
-                src={icon}
-                alt={service.title}
-                width={26}
-                height={26}
-                className="object-contain"
-              />
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/70 sm:text-base">
+            Fast, reliable parcel delivery with real-time tracking and zero hassle.
+            From personal packages to business shipments — we deliver on time,
+            every time.
+          </p>
+        </div>
+
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
+          {services.map((service, index) => (
+            <div
+              key={index}
+              className="group relative overflow-hidden rounded-[24px] border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/60 hover:bg-primary hover:shadow-[0_20px_50px_rgba(0,0,0,0.18)] sm:p-7"
+            >
+              {/* top gradient accent */}
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0 opacity-60" />
+
+              {/* Watermark number */}
+              <span className="pointer-events-none absolute right-4 top-3 select-none text-6xl font-black leading-none text-white/5 transition-colors duration-300 group-hover:text-black/10 sm:right-5 sm:top-4">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+
+              {/* Icon */}
+              <div className="relative mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/10 transition-all duration-300 group-hover:border-black/10 group-hover:bg-black/10">
+                <Image
+                  src={icon}
+                  alt={service.title}
+                  width={28}
+                  height={28}
+                  className="object-contain"
+                />
+              </div>
+
+              {/* Content */}
+              <h3 className="mb-3 pr-10 text-lg font-bold leading-snug text-white transition-colors duration-300 group-hover:text-black sm:text-xl">
+                {service.title}
+              </h3>
+
+              <p className="text-sm leading-7 text-white/65 transition-colors duration-300 group-hover:text-black/75 sm:text-base">
+                {service.desc}
+              </p>
+
+              {/* bottom accent */}
+              <div className="mt-6 flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-primary transition-colors duration-300 group-hover:bg-black" />
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50 transition-colors duration-300 group-hover:text-black/60">
+                  ZapShift Service
+                </span>
+              </div>
             </div>
-
-            {/* Text */}
-            <h3 className="font-bold text-base sm:text-lg text-white group-hover:text-black
-                           mb-2 leading-snug transition-colors duration-300">
-              {service.title}
-            </h3>
-            <p className="text-sm sm:text-base text-white/60 group-hover:text-black/70
-                          leading-relaxed transition-colors duration-300">
-              {service.desc}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
