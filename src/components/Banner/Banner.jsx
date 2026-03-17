@@ -115,8 +115,8 @@ const Banner = () => {
               onClick={() => goTo(i)}
               aria-label={`Go to slide ${i + 1}`}
               className={`rounded-full transition-all duration-300 ${i === current
-                  ? 'h-2 w-6 bg-primary sm:w-7 md:w-8'
-                  : 'h-2 w-2 bg-white/60 hover:bg-white'
+                ? 'h-2 w-6 bg-primary sm:w-7 md:w-8'
+                : 'h-2 w-2 bg-white/60 hover:bg-white'
                 }`}
             />
           ))}

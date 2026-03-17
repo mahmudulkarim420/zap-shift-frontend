@@ -57,7 +57,7 @@ const Navbar = () => {
     ],
     admin: [
       { href: '/profile', label: 'Profile' },
-      { href: '/dashboard/admin', label: 'Full Dashboard' },
+      { href: '/dashboard/admin', label: 'Admin Dashboard' },
       { href: '/track-order', label: 'Track Order' },
     ],
   };
