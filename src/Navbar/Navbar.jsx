@@ -16,80 +16,93 @@ const Navbar = () => {
     setIsRegistered(localStorage.getItem('isRegistered') === 'true');
   }, []);
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   const isActive = (path) => pathname === path;
 
   const linkClass = (path) =>
     isActive(path)
       ? 'bg-primary text-black font-semibold px-4 py-2 rounded-lg'
-      : 'text-gray-600 hover:text-primary px-4 py-2';
+      : 'text-gray-600 hover:text-primary px-4 py-2 transition';
 
-  const links = (
-    <>
-      <li>
-        <Link href="/services" className={linkClass('/services')}>
-          Services
-        </Link>
-      </li>
-      <li>
-        <Link href="/coverage" className={linkClass('/coverage')}>
-          Coverage
-        </Link>
-      </li>
-      <li>
-        <Link href="/about" className={linkClass('/about')}>
-          About Us
-        </Link>
-      </li>
-      <li>
-        <Link href="/pricing" className={linkClass('/pricing')}>
-          Pricing
-        </Link>
-      </li>
-      <li>
-        <Link href="/rider" className={linkClass('/rider')}>
-          Be a Rider
-        </Link>
-      </li>
-    </>
-  );
+  const mobileLinkClass = (path) =>
+    isActive(path)
+      ? 'bg-primary text-black font-semibold px-4 py-3 rounded-lg block'
+      : 'text-gray-600 hover:text-primary hover:bg-gray-50 px-4 py-3 rounded-lg block transition';
+
+  const navItems = [
+    { href: '/services', label: 'Services' },
+    { href: '/coverage', label: 'Coverage' },
+    { href: '/about', label: 'About Us' },
+    { href: '/pricing', label: 'Pricing' },
+    { href: '/rider', label: 'Be a Rider' },
+  ];
 
   return (
-    <nav className="bg-white shadow-sm mt-5 rounded-2xl px-5 py-3">
-      <div className="flex justify-between items-center">
+    <nav className="mt-5 rounded-2xl bg-white px-5 py-3 shadow-sm">
+      <div className="flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-end">
-          <Image className="w-9 h-9" src={logo} alt="ZapShift Logo" width={36} height={36} />
-          <h1 className="font-bold text-3xl -ms-3">ZapShift</h1>
+          <Image
+            className="h-9 w-9"
+            src={logo}
+            alt="ZapShift Logo"
+            width={36}
+            height={36}
+          />
+          <h1 className="-ms-3 text-3xl font-bold">ZapShift</h1>
         </Link>
 
         {/* Desktop Links */}
-        <ul className="hidden lg:flex gap-5 text-gray-500">{links}</ul>
+        <ul className="hidden items-center gap-2 lg:flex">
+          {navItems.map((item) => (
+            <li key={item.href}>
+              <Link href={item.href} className={linkClass(item.href)}>
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
 
         {/* Desktop Buttons */}
-        <div className="hidden lg:flex gap-4 items-center">
+        <div className="hidden items-center gap-4 lg:flex">
           {isRegistered ? (
-            <Link href="/login" className="border border-gray-300 rounded-xl px-4 py-2 text-gray-500 hover:bg-gray-50 transition">
+            <Link
+              href="/login"
+              className="rounded-xl border border-gray-300 px-4 py-2 text-gray-500 transition hover:bg-gray-50"
+            >
               Sign In
             </Link>
           ) : (
-            <Link href="/register" className="border border-gray-300 rounded-xl px-4 py-2 text-gray-500 hover:bg-gray-50 transition">
+            <Link
+              href="/register"
+              className="rounded-xl border border-gray-300 px-4 py-2 text-gray-500 transition hover:bg-gray-50"
+            >
               Sign Up
             </Link>
           )}
+
           <Link
             href="/rider"
-            className="bg-primary text-black font-semibold rounded-xl shadow px-4 py-2"
+            className="rounded-xl bg-primary px-4 py-2 font-semibold text-black shadow"
           >
             Be a Rider
           </Link>
-          <div className="bg-secondary text-primary p-3 rounded-full -rotate-45">
+
+          <div className="-rotate-45 rounded-full bg-secondary p-3 text-primary">
             <FaArrowRight />
           </div>
         </div>
 
         {/* Mobile Hamburger */}
         <div className="lg:hidden">
-          <button onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+            className="rounded-lg p-2 transition hover:bg-gray-100"
+          >
             {isOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
           </button>
         </div>
@@ -97,16 +110,45 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="lg:hidden mt-3 bg-white rounded-2xl shadow p-4">
-          <ul className="flex flex-col gap-3 text-gray-500">{links}</ul>
-          <div className="flex flex-col gap-3 mt-4">
+        <div className="mt-3 rounded-2xl bg-white p-4 shadow lg:hidden">
+          <ul className="flex flex-col gap-2">
+            {navItems.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={mobileLinkClass(item.href)}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-4 flex flex-col gap-3">
+            {isRegistered ? (
+              <Link
+                href="/login"
+                onClick={() => setIsOpen(false)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
+              >
+                Sign In
+              </Link>
+            ) : (
+              <Link
+                href="/register"
+                onClick={() => setIsOpen(false)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
+              >
+                Sign Up
+              </Link>
+            )}
+
             <Link
-              href="/register"
-              className="border border-gray-300 rounded-xl px-4 py-2 text-gray-500 text-center hover:bg-gray-50 transition w-full"
+              href="/rider"
+              onClick={() => setIsOpen(false)}
+              className="w-full rounded-xl bg-primary px-4 py-2 text-center font-semibold text-black shadow"
             >
-              Sign Up
-            </Link>
-            <Link href="/rider" className="bg-primary text-black font-semibold rounded-xl shadow px-4 py-2 w-full text-center">
               Be a Rider
             </Link>
           </div>

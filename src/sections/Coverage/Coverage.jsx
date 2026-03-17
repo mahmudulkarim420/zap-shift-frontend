@@ -105,7 +105,7 @@ const Coverage = () => {
           {filteredWarehouses.map((warehouse) => (
             <Marker
               position={[parseFloat(warehouse.latitude), parseFloat(warehouse.longitude)]}
-              key={warehouse.id}
+              key={warehouse.district}
             >
               <Popup>
                 <strong>{warehouse.district}</strong> <br />
