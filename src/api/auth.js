@@ -27,4 +27,15 @@ export const authApi = {
     });
     return response.json();
   },
+
+  getMe: async (token) => {
+    const response = await fetch(`${API_BASE_URL}/auth/me`, {
+      method: 'GET',
+      headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}` 
+      },
+    });
+    return response.json();
+  },
 };

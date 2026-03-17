@@ -26,7 +26,7 @@ const Register = () => {
       });
       if (result.success) {
         console.log('User registered success');
-        router.push("/dashboard/user");
+        router.push("/");
       }
     } catch (error) {
       console.error('Registration error:', error.message);
@@ -37,7 +37,7 @@ const Register = () => {
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
-      router.push("/dashboard/user");
+      router.push("/");
     } catch (error) {
       console.error('Google login error:', error.message || "Feature not available");
       alert("Google login is currently disabled on the backend. Please use email/password.");

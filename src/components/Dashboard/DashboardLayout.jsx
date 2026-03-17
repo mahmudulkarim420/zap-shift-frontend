@@ -13,20 +13,38 @@ export default function DashboardLayout({ children, roleName }) {
       {/* Sidebar */}
       <aside className="w-64 bg-white shadow-md flex-shrink-0">
         <div className="p-6 border-b">
-          <h2 className="text-xl font-bold text-gray-800">ZapShift</h2>
+          <Link href="/" className="text-xl font-bold text-gray-800">ZapShift</Link>
+          <br />
           <span className="text-xs font-semibold text-primary uppercase tracking-wider">
-            {roleName} Dashboard
+            Dashboard
           </span>
         </div>
-        
+
         <nav className="p-4 space-y-2">
           <Link href={`/dashboard/${userRole}`} className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
             Overview
           </Link>
-          <Link href="/services" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
-            Services
-          </Link>
-          <button 
+
+          {userRole === 'admin' && (
+            <>
+              <Link href="/dashboard/admin/users" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                Manage Users
+              </Link>
+              <Link href="/dashboard/admin/parcels" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                All Parcels
+              </Link>
+              <Link href="/dashboard/admin/riders" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                Manage Riders
+              </Link>
+            </>
+          )}
+
+          {userRole !== 'admin' && (
+            <Link href="/services" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+              Services
+            </Link>
+          )}
+          <button
             onClick={() => { logout(); router.push('/login'); }}
             className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition"
           >
@@ -52,7 +70,7 @@ export default function DashboardLayout({ children, roleName }) {
             </div>
           </div>
         </header>
-        
+
         <section className="bg-white p-8 rounded-2xl shadow-sm min-h-[400px]">
           {children}
         </section>

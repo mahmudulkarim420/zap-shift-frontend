@@ -10,7 +10,28 @@ const AuthProvider = ({ children }) => {
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Load auth state from localStorage on mount
+  const refreshUser = async () => {
+    const token = localStorage.getItem('zap-shift-token');
+    if (!token) return;
+    try {
+      const result = await authApi.getMe(token);
+      if (result.success && result.data) {
+        // Prevent unnecessary state updates if role remains the same
+        setUser((prev) => {
+          if (!prev || prev.role !== result.data.role) {
+             setUserRole(result.data.role);
+             localStorage.setItem('zap-shift-user', JSON.stringify(result.data));
+             return result.data;
+          }
+          return prev;
+        });
+      }
+    } catch (e) {
+      console.error('Failed to grab live user data', e);
+    }
+  };
+
+  // Load auth state from localStorage on mount and poll for updates
   useEffect(() => {
     const storedUser = localStorage.getItem('zap-shift-user');
     const storedToken = localStorage.getItem('zap-shift-token');
@@ -20,12 +41,19 @@ const AuthProvider = ({ children }) => {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
         setUserRole(parsedUser.role);
+        
+        // Fetch real-time from DB
+        refreshUser();
       } catch (e) {
         console.error("Failed to parse stored user", e);
         localStorage.removeItem('zap-shift-user');
       }
     }
     setLoading(false);
+
+    // Set polling for real-time updates every 5 seconds
+    const interval = setInterval(refreshUser, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const registerUser = async (userData) => {

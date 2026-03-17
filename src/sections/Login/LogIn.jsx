@@ -19,7 +19,7 @@ const LogIn = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user && userRole) {
-      router.push(`/dashboard/${userRole}`);
+      router.push(`/`);
     }
   }, [user, userRole, router]);
 
@@ -27,7 +27,7 @@ const LogIn = () => {
     try {
       const result = await login(data.email, data.password);
       if (result.success) {
-        router.push(`/dashboard/${result.user.role}`);
+        router.push(`/`);
       }
     } catch (error) {
       console.error('Login error:', error.message);
@@ -38,7 +38,7 @@ const LogIn = () => {
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
-      router.push("/dashboard/user");
+      router.push("/");
     } catch (error) {
       console.error('Google login error:', error.message);
       alert("Google login is not yet connected to the backend.");
