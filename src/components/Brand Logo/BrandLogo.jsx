@@ -14,25 +14,53 @@ const allBrands = [brand1, brand2, brand3, brand4, brand5, brand6, brand7];
 
 const BrandLogo = () => {
   return (
-    <div className="my-20">
-      <h3 className='font-bold text-secondary text-center mb-10 text-lg md:text-xl'>
-        We've helped thousands of sales teams
-      </h3>
-      <Marquee
-        gradient={false}     
-        speed={100}           
-        pauseOnHover={true}  
-      >
-        {allBrands.map((brand, index) => (
-          <div key={index} className='mx-6 md:mx-8 flex items-center'>
-            <Image src={brand} alt={`Brand ${index + 1}`} className='h-4 md:h-5 lg:h-6 w-auto object-contain' height={24} />
-          </div>
-        ))}
-      </Marquee>
-      <div>
-        <hr className=' border-dashed border-secondary mt-20' />
+    <section>
+
+      {/* Header */}
+      <div className="text-center mb-8 sm:mb-10">
+        <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-2">
+          Trusted By
+        </p>
+        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-secondary">
+          We've helped thousands of sales teams
+        </h3>
       </div>
-    </div>
+
+      {/* Marquee with fade edges */}
+      <div className="relative">
+        {/* Left fade */}
+        <div className="absolute left-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        {/* Right fade */}
+        <div className="absolute right-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+        <Marquee
+          gradient={false}
+          speed={60}
+          pauseOnHover={true}
+        >
+          {allBrands.map((brand, index) => (
+            <div
+              key={index}
+              className="mx-8 sm:mx-10 lg:mx-14 flex items-center justify-center
+                          hover:opacity-100 hover:grayscale-0
+                         transition-all duration-300"
+            >
+              <Image
+                src={brand}
+                alt={`Brand ${index + 1}`}
+                height={28}
+                className="h-5 sm:h-6 lg:h-7 w-auto object-contain"
+              />
+            </div>
+          ))}
+        </Marquee>
+      </div>
+
+      {/* Divider */}
+      <div className="mt-14 sm:mt-16 lg:mt-20 px-4 sm:px-8 lg:px-12">
+        <hr className="border-dashed border-secondary/30" />
+      </div>
+    </section>
   );
 };
 

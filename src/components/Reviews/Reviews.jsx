@@ -30,84 +30,123 @@ const Reviews = () => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto py-10">
-      <div className="text-center">
-        <Image className="w-60 mx-auto" src={customerImg} alt="Customer Top" width={240} height={100} />
-        <div>
-          <h2 className="font-bold text-secondary mb-5 mt-3 text-3xl">
-            What our customers are sayings
-          </h2>
-          <p className="max-w-2xl mx-auto mb-8">
-            Enhance posture, mobility, and well-being effortlessly with Posture
-            Pro. Achieve proper alignment, reduce pain, and strengthen your body
-            with ease!
-          </p>
+    <section className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      {/* Section Header */}
+      <div className="text-center mb-10 sm:mb-12">
+
+        {/* Decorative customer image */}
+        <div className="flex justify-center mb-4">
+          <Image
+            src={customerImg}
+            alt="Happy customers"
+            width={220}
+            height={90}
+            className="w-44 sm:w-52 lg:w-60 object-contain"
+          />
         </div>
+
+        <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-2">
+          Customer Reviews
+        </p>
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-secondary mb-4">
+          What Our Customers Are Saying
+        </h2>
+        <p className="text-gray-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+          Thousands of merchants and customers trust ZapShift for fast,
+          safe, and reliable delivery across Bangladesh — every single day.
+        </p>
       </div>
-      
-      {reviews.length > 0 && (
-        <Swiper
-          effect={'coverflow'}
-          grabCursor={true}
-          loop={true}
-          centeredSlides={true}
-          slidesPerView={3}
-          breakpoints={{
-            0: { slidesPerView: 1 },
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-          }}
-          coverflowEffect={{
-            rotate: 30,
-            stretch: 0,
-            depth: 200,
-            scale: 0.75,
-            modifier: 1,
-            slideShadows: false,
-          }}
-          autoplay={{
-            delay: 2000,
-            disableOnInteraction: false,
-          }}
-          pagination={{ clickable: true }}
-          navigation={{
-            prevEl: prevRef.current,
-            nextEl: nextRef.current,
-          }}
-          onBeforeInit={(swiper) => {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
-          }}
-          modules={[EffectCoverflow, Pagination, Autoplay, Navigation]}
-          className="mySwiper"
-        >
-          {reviews.map((review) => (
-            <SwiperSlide key={review.id}>
-              <ReviewCard review={review} />
-            </SwiperSlide>
+
+      {/* Swiper Carousel */}
+      {reviews.length > 0 ? (
+        <div className="relative">
+          <Swiper
+            effect="coverflow"
+            grabCursor={true}
+            loop={true}
+            centeredSlides={true}
+            breakpoints={{
+              0: { slidesPerView: 1 },
+              640: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+            coverflowEffect={{
+              rotate: 20,
+              stretch: 0,
+              depth: 160,
+              scale: 0.82,
+              modifier: 1,
+              slideShadows: false,
+            }}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            pagination={{
+              clickable: true,
+              el: '.reviews-pagination',
+            }}
+            navigation={{
+              prevEl: prevRef.current,
+              nextEl: nextRef.current,
+            }}
+            onBeforeInit={(swiper) => {
+              swiper.params.navigation.prevEl = prevRef.current;
+              swiper.params.navigation.nextEl = nextRef.current;
+            }}
+            modules={[EffectCoverflow, Pagination, Autoplay, Navigation]}
+            className="pb-12"
+          >
+            {reviews.map((review) => (
+              <SwiperSlide key={review.id}>
+                <ReviewCard review={review} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Custom Pagination Dots */}
+          <div className="reviews-pagination flex justify-center gap-2 mt-2" />
+        </div>
+      ) : (
+        /* Loading skeleton */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="bg-gray-100 animate-pulse rounded-2xl h-48 w-full"
+            />
           ))}
-        </Swiper>
+        </div>
       )}
 
-      {/* Buttons */}
-      <div className="flex justify-center gap-6 mt-6 md:-translate-y-10 z-10 relative">
+      {/* Navigation Buttons */}
+      <div className="flex items-center justify-center gap-4 mt-6">
         <button
           ref={prevRef}
-          className="bg-white text-black w-10 h-10 rounded-full shadow flex items-center justify-center transition hover:bg-gray-50"
           aria-label="Previous review"
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-gray-200 bg-white
+                     text-secondary flex items-center justify-center shadow-sm
+                     hover:border-primary hover:text-primary
+                     active:scale-95 transition-all duration-200"
         >
-          <FaArrowLeft />
+          <FaArrowLeft className="text-sm" />
         </button>
+
         <button
           ref={nextRef}
-          className="bg-primary text-black w-10 h-10 rounded-full shadow flex items-center justify-center transition hover:bg-lime-400"
           aria-label="Next review"
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary text-black
+                     flex items-center justify-center shadow-md
+                     hover:brightness-105 active:scale-95
+                     transition-all duration-200"
         >
-          <FaArrowRight />
+          <FaArrowRight className="text-sm" />
         </button>
       </div>
-    </div>
+    </section>
   );
 };
 

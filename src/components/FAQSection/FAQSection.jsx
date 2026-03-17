@@ -1,106 +1,118 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { FaArrowRight } from 'react-icons/fa';
+import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    question: 'How does this posture corrector work?',
+    question: 'How do I book a parcel pick-up?',
     answer:
-      "A posture corrector works by providing support and gentle alignment to your shoulders, back, and spine, encouraging you to maintain proper posture throughout the day. Here's how it typically functions: A posture corrector works by providing support and gentle alignment to your shoulders.",
-    isExpanded: true,
-    highlight: true,
+      'Booking is simple — log in to your ZapShift merchant account, enter the pick-up and drop-off details, select your preferred delivery speed, and confirm. Our rider will arrive at your location within the scheduled window.',
   },
   {
-    question: 'Is it suitable for all ages and body types?',
+    question: 'What areas does ZapShift deliver to?',
     answer:
-      'Yes, our posture corrector is designed to be fully adjustable to fit a wide range of body types and ages. Please refer to our size guide for more details.',
-    highlight: true,
+      'We deliver nationwide across all 64 districts of Bangladesh, with express same-day or 4–6 hour delivery available within Dhaka. Major cities like Chittagong, Sylhet, Khulna, and Rajshahi enjoy 24–48 hour service.',
   },
   {
-    question: 'Does it really help with back pain and posture improvement?',
+    question: 'How does Cash on Delivery (COD) work?',
     answer:
-      'Absolutely. Consistent use of the posture corrector can significantly aid in reducing muscle strain, correcting alignment, and improving overall posture, which in turn helps alleviate back pain.',
-    highlight: true,
+      'Our riders collect payment from your customer at the time of delivery. The collected amount is transferred to your registered merchant account within the standard settlement cycle — securely and on time.',
   },
   {
-    question: 'Does it have smart features like vibration alerts?',
+    question: 'Can I track my parcel in real time?',
     answer:
-      'No, the Posture Pro is a simple, non-electronic device focused on providing comfortable physical support. It does not include smart features like vibration alerts.',
-    highlight: true,
+      'Yes. Every shipment comes with a live tracking link. You and your customer can monitor the parcel status — from pick-up confirmation through to final delivery — directly from our platform or app.',
   },
   {
-    question: 'How will I be notified when the product is back in stock?',
+    question: 'What happens if a parcel is lost or damaged?',
     answer:
-      'You can sign up for a notification on the product page. We will send you an email as soon as the Posture Pro is available for purchase again.',
-    highlight: true,
+      'All parcels are covered under our delivery guarantee. In the rare event of loss or damage, our support team initiates an investigation within 24 hours and processes compensation according to the declared parcel value.',
   },
 ];
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
-  const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
-    <div className="my-16 sm:my-20 px-4 sm:px-6 lg:px-8">
-      {/* Header Section */}
-      <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-12">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary tracking-tight">
-          Frequently Asked Question (FAQ)
+    <section className="px-4 sm:px-8 lg:px-12">
+
+      {/* Section Header */}
+      <div className="max-w-2xl mx-auto text-center mb-10 sm:mb-12">
+        <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-2">
+          Got Questions?
+        </p>
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-secondary mb-4">
+          Frequently Asked Questions
         </h2>
-        <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-600">
-          Enhance posture, mobility, and well-being effortlessly with Posture Pro. Achieve proper alignment, reduce pain, and strengthen your body with ease!
+        <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
+          Everything you need to know about shipping, delivery, and working
+          with ZapShift. Can't find your answer? Our support team is available 24/7.
         </p>
       </div>
 
-      {/* FAQ Items */}
-      <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 md:space-y-5">
-        {faqs.map((faq, index) => (
-          <div
-            key={index}
-            className={`border rounded-lg shadow-sm overflow-hidden transition-all duration-300 
-              ${faq.highlight ? 'border-teal-300 bg-teal-50' : 'bg-white border-gray-200 hover:border-gray-300'}`}
-          >
-            <button
-              className="flex justify-between items-center w-full py-3 sm:py-4 px-4 sm:px-6 text-left"
-              onClick={() => toggleFAQ(index)}
+      {/* FAQ Accordion */}
+      <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4">
+        {faqs.map((faq, index) => {
+          const isOpen = openIndex === index;
+          return (
+            <div
+              key={index}
+              className={`border rounded-2xl overflow-hidden transition-all duration-300
+                ${isOpen
+                  ? 'border-primary/40 bg-primary/5 shadow-md'
+                  : 'border-gray-100 bg-white hover:border-primary/20 hover:shadow-sm shadow-sm'
+                }`}
             >
-              <span className={`text-sm sm:text-base md:text-lg font-semibold ${faq.highlight ? 'text-gray-800' : 'text-gray-700'}`}>
-                {faq.question}
-              </span>
-              {openIndex === index ? (
-                <ChevronUp className={`w-4 sm:w-5 h-4 sm:h-5 ${faq.highlight ? 'text-teal-600' : 'text-gray-500'}`} />
-              ) : (
-                <ChevronDown className={`w-4 sm:w-5 h-4 sm:h-5 ${faq.highlight ? 'text-teal-600' : 'text-gray-500'}`} />
-              )}
-            </button>
+              <button
+                onClick={() => setOpenIndex(isOpen ? null : index)}
+                className="flex justify-between items-center w-full px-5 sm:px-6 py-4 sm:py-5 text-left gap-4"
+                aria-expanded={isOpen}
+              >
+                <span className={`text-sm sm:text-base font-semibold leading-snug transition-colors duration-200
+                  ${isOpen ? 'text-secondary' : 'text-gray-700'}`}>
+                  {faq.question}
+                </span>
 
-            {/* Answer Content */}
-            {openIndex === index && (
-              <div className={`px-4 sm:px-6 pb-3 sm:pb-4 pt-0 transition-opacity duration-300 ${faq.highlight ? 'text-gray-700' : 'text-gray-500'}`}>
-                <p className="text-xs sm:text-sm md:text-base leading-relaxed">{faq.answer}</p>
+                {/* Animated chevron */}
+                <span className={`shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center
+                                  transition-all duration-300
+                                  ${isOpen
+                    ? 'bg-primary text-black rotate-180'
+                    : 'bg-gray-100 text-gray-500'
+                  }`}>
+                  <ChevronDown className="w-4 h-4" />
+                </span>
+              </button>
+
+              {/* Animated answer panel */}
+              <div className={`grid transition-all duration-300 ease-in-out
+                              ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className="overflow-hidden">
+                  <p className="px-5 sm:px-6 pb-5 text-sm sm:text-base text-gray-500 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
 
-      {/* See More Button */}
-      <div className="relative text-center mt-8 sm:mt-10">
-        <button className="bg-primary hover:bg-lime-400 text-gray-800 font-semibold py-3 px-5 sm:px-6 rounded-full transition-colors duration-200 shadow-md">
-          See More FAQ's
+      {/* CTA */}
+      <div className="flex justify-center mt-10 sm:mt-12">
+        <button className="inline-flex items-center gap-3 bg-secondary text-white
+                           font-semibold px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-sm sm:text-base
+                           hover:brightness-110 active:scale-95 transition-all duration-200 shadow-lg">
+          View All FAQs
+          <span className="w-6 h-6 bg-primary text-black rounded-full flex items-center justify-center -rotate-45 shrink-0">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 8L8 2M8 2H3M8 2V7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
         </button>
-
-        {/* Arrow outside button */}
-        <div className="absolute top-1/2 md:right-[37%] right-[18%] -rotate-45 -translate-y-1/2 bg-secondary text-primary p-3 rounded-full">
-          <FaArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

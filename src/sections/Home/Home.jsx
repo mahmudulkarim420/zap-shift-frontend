@@ -10,7 +10,7 @@ import FAQSection from '../../components/FAQSection/FAQSection.jsx';
 
 const Home = () => {
     return (
-        <div>
+        <div className="flex flex-col gap-16 sm:gap-20 lg:gap-24 pb-16 sm:pb-20 lg:pb-24">
             <Banner/>
             <HowItWorks/>
             <OurServices/>
