@@ -8,7 +8,7 @@ import { AuthContext } from '../../providers/AuthProvider';
 
 const Register = () => {
   const router = useRouter();
-  const { createUser, updateUserProfile, googleLogin } = useContext(AuthContext);
+  const { registerUser, googleLogin } = useContext(AuthContext);
 
   const {
     register,
@@ -18,21 +18,29 @@ const Register = () => {
 
   const handleRegister = async (data) => {
     try {
-      const result = await createUser(data.email, data.password);
-      await updateUserProfile(data.name, '');
-      console.log('User registered:', result.user);
-      router.push("/");
+      const result = await registerUser({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        phone: data.phone
+      });
+      if (result.success) {
+        console.log('User registered success');
+        router.push("/dashboard/user");
+      }
     } catch (error) {
       console.error('Registration error:', error.message);
+      alert(error.message || "Registration failed");
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
       await googleLogin();
-      router.push("/");
+      router.push("/dashboard/user");
     } catch (error) {
-      console.error('Google login error:', error.message);
+      console.error('Google login error:', error.message || "Feature not available");
+      alert("Google login is currently disabled on the backend. Please use email/password.");
     }
   };
 
@@ -43,7 +51,7 @@ const Register = () => {
         <p className="text-gray-500 mt-2">Register with ZapShift</p>
       </div>
 
-      <form onSubmit={handleSubmit(handleRegister)} className="space-y-6">
+      <form onSubmit={handleSubmit(handleRegister)} className="space-y-4">
         <div>
           <label className="block text-sm font-bold text-secondary mb-2">Name</label>
           <input
@@ -67,6 +75,19 @@ const Register = () => {
           />
           {errors.email && (
             <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-bold text-secondary mb-2">Phone Number</label>
+          <input
+            type="tel"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
+            placeholder="01XXXXXXXXX"
+            {...register('phone', { required: 'Phone is required' })}
+          />
+          {errors.phone && (
+            <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>
           )}
         </div>
 

@@ -15,7 +15,33 @@ const inputClass = `h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-
                     focus:border-primary focus:ring-2 focus:ring-primary/20
                     transition-all duration-200`;
 
+import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { AuthContext } from '@/providers/AuthProvider';
+
 const Rider = () => {
+  const router = useRouter();
+  const { registerRider } = useContext(AuthContext);
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      const result = await registerRider({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        phone: data.phone,
+      });
+      if (result.success) {
+        router.push('/dashboard/rider');
+      }
+    } catch (error) {
+       console.error("Rider registration error:", error.message);
+       alert(error.message || "Failed to register as rider");
+    }
+  };
+
   return (
     <main className="min-h-screen py-10 sm:py-14">
       <div className="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden">
@@ -71,7 +97,7 @@ const Rider = () => {
                 Tell Us About Yourself
               </h2>
 
-              <form className="space-y-4" onSubmit={e => e.preventDefault()}>
+              <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
 
                 {/* Row 1 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -79,13 +105,13 @@ const Rider = () => {
                     <label className="text-xs font-bold text-secondary uppercase tracking-wide">
                       Full Name
                     </label>
-                    <input type="text" placeholder="e.g. Rahim Uddin" className={inputClass} />
+                    <input type="text" placeholder="e.g. Rahim Uddin" className={inputClass} {...register('name', { required: true })} />
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-bold text-secondary uppercase tracking-wide">
                       Age
                     </label>
-                    <input type="number" placeholder="e.g. 24" min="18" className={inputClass} />
+                    <input type="number" placeholder="e.g. 24" min="18" className={inputClass} {...register('age')} />
                   </div>
                 </div>
 
@@ -95,23 +121,13 @@ const Rider = () => {
                     <label className="text-xs font-bold text-secondary uppercase tracking-wide">
                       Email Address
                     </label>
-                    <input type="email" placeholder="you@example.com" className={inputClass} />
+                    <input type="email" placeholder="you@example.com" className={inputClass} {...register('email', { required: true })} />
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-bold text-secondary uppercase tracking-wide">
-                      Region
+                      Password
                     </label>
-                    <select className={`${inputClass} appearance-none cursor-pointer`}>
-                      <option value="">Select your region</option>
-                      <option>Dhaka</option>
-                      <option>Chittagong</option>
-                      <option>Sylhet</option>
-                      <option>Rajshahi</option>
-                      <option>Khulna</option>
-                      <option>Barisal</option>
-                      <option>Rangpur</option>
-                      <option>Mymensingh</option>
-                    </select>
+                    <input type="password" placeholder="••••••••" className={inputClass} {...register('password', { required: true, minLength: 6 })} />
                   </div>
                 </div>
 
@@ -121,13 +137,13 @@ const Rider = () => {
                     <label className="text-xs font-bold text-secondary uppercase tracking-wide">
                       NID Number
                     </label>
-                    <input type="text" placeholder="National ID No." className={inputClass} />
+                    <input type="text" placeholder="National ID No." className={inputClass} {...register('nid')} />
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-bold text-secondary uppercase tracking-wide">
                       Contact Number
                     </label>
-                    <input type="tel" placeholder="01XXXXXXXXX" className={inputClass} />
+                    <input type="tel" placeholder="01XXXXXXXXX" className={inputClass} {...register('phone', { required: true })} />
                   </div>
                 </div>
 
@@ -136,7 +152,7 @@ const Rider = () => {
                   <label className="text-xs font-bold text-secondary uppercase tracking-wide">
                     Preferred Warehouse
                   </label>
-                  <select className={`${inputClass} appearance-none cursor-pointer`}>
+                  <select className={`${inputClass} appearance-none cursor-pointer`} {...register('warehouse')}>
                     <option value="">Select a warehouse</option>
                     <option>Dhaka Central Hub</option>
                     <option>Chittagong Port Hub</option>
@@ -150,9 +166,9 @@ const Rider = () => {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full h-12 bg-primary text-black font-semibold text-sm sm:text-base
-                               rounded-full shadow hover:brightness-105 active:scale-95
-                               transition-all duration-200"
+                    className="w-full h-12 bg-primary text-black font-extrabold text-sm sm:text-base
+                                rounded-full shadow hover:brightness-105 active:scale-95
+                                transition-all duration-200 uppercase tracking-widest"
                   >
                     Submit Application
                   </button>
