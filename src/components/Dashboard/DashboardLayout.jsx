@@ -9,72 +9,147 @@ export default function DashboardLayout({ children, roleName }) {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen flex" style={{ background: '#f0f2f7', fontFamily: "'DM Sans', sans-serif" }}>
+
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md flex-shrink-0">
-        <div className="p-6 border-b">
-          <Link href="/" className="text-xl font-bold text-gray-800">ZapShift</Link>
-          <br />
-          <span className="text-xs font-semibold text-primary uppercase tracking-wider">
-            Dashboard
-          </span>
+      <aside className="w-60 flex-shrink-0 flex flex-col" style={{
+        background: '#033C3F',
+        boxShadow: '4px 0 24px rgba(0,0,0,0.18)'
+      }}>
+
+        {/* Logo */}
+        <div className="px-7 pt-8 pb-6 border-b border-white/10">
+          <Link href="/" className="block">
+            <span className="text-2xl font-black tracking-tight" style={{
+              color: '#C8FF65'
+            }}>
+              ZapShift
+            </span>
+            <span className="block mt-1 text-[10px] font-semibold tracking-[0.2em] uppercase text-white/30">
+              Dashboard
+            </span>
+          </Link>
         </div>
 
-        <nav className="p-4 space-y-2">
-          <Link href={`/dashboard/${userRole}`} className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+        {/* User Card */}
+        <div className="mx-4 mt-5 mb-2 p-3 rounded-xl flex items-center gap-3" style={{
+          background: 'rgba(255,255,255,0.05)',
+          border: '1px solid rgba(255,255,255,0.08)'
+        }}>
+          <div className="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm flex-shrink-0"
+            style={{ background: '#C8FF65', color: '#033C3F' }}>
+            {user?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
+          </div>
+          <div className="min-w-0">
+            <p className="text-white text-xs font-semibold truncate">{user?.name || 'User'}</p>
+            <p className="text-white/40 text-[10px] uppercase tracking-widest font-medium">{userRole}</p>
+          </div>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 space-y-1">
+          <p className="px-4 text-[9px] uppercase tracking-[0.18em] text-white/25 font-semibold mb-2">Navigation</p>
+
+          <NavLink href={`/dashboard/${userRole}`} icon="⊞">
             Overview
-          </Link>
+          </NavLink>
 
           {userRole === 'admin' && (
             <>
-              <Link href="/dashboard/admin/users" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
-                Manage Users
-              </Link>
-              <Link href="/dashboard/admin/parcels" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
-                All Parcels
-              </Link>
-              <Link href="/dashboard/admin/riders" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
-                Manage Riders
-              </Link>
+              <p className="px-4 pt-4 pb-1 text-[9px] uppercase tracking-[0.18em] text-white/25 font-semibold">Admin</p>
+              <NavLink href="/dashboard/admin/users" icon="👥">Manage Users</NavLink>
+              <NavLink href="/dashboard/admin/parcels" icon="📦">All Parcels</NavLink>
+              <NavLink href="/dashboard/admin/riders" icon="🛵">Manage Riders</NavLink>
             </>
           )}
 
           {userRole !== 'admin' && (
-            <Link href="/services" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
-              Services
-            </Link>
+            <NavLink href="/services" icon="✦">Services</NavLink>
           )}
+        </nav>
+
+        {/* Logout */}
+        <div className="px-3 pb-6">
           <button
             onClick={() => { logout(); router.push('/login'); }}
-            className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+            className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
+            style={{ color: '#f87171', background: 'rgba(248,113,113,0.08)' }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(248,113,113,0.16)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'rgba(248,113,113,0.08)'}
           >
-            Logout
+            <span>↩</span>
+            <span>Logout</span>
           </button>
-        </nav>
+        </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col p-10 overflow-auto">
-        <header className="flex justify-between items-center mb-8 bg-white p-6 rounded-2xl shadow-sm">
+      {/* Main */}
+      <main className="flex-1 flex flex-col overflow-auto">
+
+        {/* Top Header Bar */}
+        <header className="sticky top-0 z-10 flex items-center justify-between px-8 py-4"
+          style={{
+            background: 'rgba(240,242,247,0.85)',
+            backdropFilter: 'blur(16px)',
+            borderBottom: '1px solid rgba(0,0,0,0.06)'
+          }}>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Welcome, {user?.name || 'User'}!</h1>
-            <p className="text-gray-500 font-medium">You are logged in as a {userRole}.</p>
+            <h1 className="text-lg font-black text-gray-900 tracking-tight leading-none">
+              Welcome back, {user?.name?.split(' ')[0] || 'User'} 👋
+            </h1>
+            <p className="text-xs text-gray-400 font-medium mt-0.5">
+              Logged in as <span className="font-semibold text-gray-500 capitalize">{userRole}</span>
+            </p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-extrabold text-secondary tracking-tight">{user?.email}</p>
-              <p className="text-[10px] font-bold text-primary uppercase tracking-widest">{userRole}</p>
+
+          <div className="flex items-center gap-3">
+            <div className="text-right hidden sm:block">
+              <p className="text-xs font-bold text-gray-700">{user?.email}</p>
+              <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: '#033C3F' }}>{userRole}</p>
             </div>
-            <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center font-extrabold text-lg shadow-lg shadow-primary/20">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-base shadow-md"
+              style={{ background: '#C8FF65', color: '#033C3F' }}>
               {user?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
             </div>
           </div>
         </header>
 
-        <section className="bg-white p-8 rounded-2xl shadow-sm min-h-[400px]">
-          {children}
-        </section>
+        {/* Page Content */}
+        <div className="flex-1 p-8">
+          <div className="rounded-2xl overflow-hidden"
+            style={{
+              background: '#fff',
+              boxShadow: '0 2px 20px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04)',
+              minHeight: '400px'
+            }}>
+            <div className="p-8">
+              {children}
+            </div>
+          </div>
+        </div>
       </main>
     </div>
+  );
+}
+
+// Helper sub-component for nav links
+function NavLink({ href, icon, children }) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group"
+      style={{ color: 'rgba(255,255,255,0.55)' }}
+      onMouseEnter={e => {
+        e.currentTarget.style.background = 'rgba(200, 255, 101, 0.1)';
+        e.currentTarget.style.color = '#C8FF65';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.background = 'transparent';
+        e.currentTarget.style.color = 'rgba(255,255,255,0.55)';
+      }}
+    >
+      <span className="text-base leading-none">{icon}</span>
+      <span>{children}</span>
+    </Link>
   );
 }

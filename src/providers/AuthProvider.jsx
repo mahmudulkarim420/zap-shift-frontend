@@ -9,124 +9,127 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const refreshUser = async () => {
-    const token = localStorage.getItem('zap-shift-token');
-    if (!token) return;
     try {
-      const result = await authApi.getMe(token);
+      setLoading(true);
+      setError(null);
+
+      const result = await authApi.getMe();
+
       if (result.success && result.data) {
-        // Prevent unnecessary state updates if role remains the same
-        setUser((prev) => {
-          if (!prev || prev.role !== result.data.role) {
-             setUserRole(result.data.role);
-             localStorage.setItem('zap-shift-user', JSON.stringify(result.data));
-             return result.data;
-          }
-          return prev;
-        });
+        setUser(result.data);
+        setUserRole(result.data.role);
+        return result;
+      } else {
+        setUser(null);
+        setUserRole(null);
+        return result;
       }
     } catch (e) {
-      console.error('Failed to grab live user data', e);
+      console.error('Failed to fetch current user', e);
+      setUser(null);
+      setUserRole(null);
+      setError(e?.response?.data?.message || e.message || 'Failed to fetch user');
+      return { success: false };
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Load auth state from localStorage on mount and poll for updates
   useEffect(() => {
-    const storedUser = localStorage.getItem('zap-shift-user');
-    const storedToken = localStorage.getItem('zap-shift-token');
-    
-    if (storedUser && storedToken) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-        setUserRole(parsedUser.role);
-        
-        // Fetch real-time from DB
-        refreshUser();
-      } catch (e) {
-        console.error("Failed to parse stored user", e);
-        localStorage.removeItem('zap-shift-user');
-      }
-    }
-    setLoading(false);
-
-    // Set polling for real-time updates every 5 seconds
-    const interval = setInterval(refreshUser, 5000);
-    return () => clearInterval(interval);
+    refreshUser();
   }, []);
 
   const registerUser = async (userData) => {
-    setLoading(true);
     try {
+      setLoading(true);
+      setError(null);
+
       const data = await authApi.register(userData);
+
       if (data.success) {
-        saveAuth(data);
+        await refreshUser();
         return data;
       }
+
       throw new Error(data.message || 'Registration failed');
+    } catch (err) {
+      setError(err?.response?.data?.message || err.message || 'Registration failed');
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
   const registerRider = async (riderData) => {
-    setLoading(true);
     try {
+      setLoading(true);
+      setError(null);
+
       const data = await authApi.registerRider(riderData);
+
       if (data.success) {
-        saveAuth(data);
+        await refreshUser();
         return data;
       }
+
       throw new Error(data.message || 'Rider registration failed');
+    } catch (err) {
+      setError(err?.response?.data?.message || err.message || 'Rider registration failed');
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
   const login = async (email, password) => {
-    setLoading(true);
     try {
+      setLoading(true);
+      setError(null);
+
       const data = await authApi.login(email, password);
+
       if (data.success) {
-        saveAuth(data);
+        await refreshUser();
         return data;
       }
+
       throw new Error(data.message || 'Login failed');
+    } catch (err) {
+      setError(err?.response?.data?.message || err.message || 'Login failed');
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('zap-shift-user');
-    localStorage.removeItem('zap-shift-token');
-    setUser(null);
-    setUserRole(null);
-    return Promise.resolve();
-  };
-
-  const saveAuth = (data) => {
-    localStorage.setItem('zap-shift-user', JSON.stringify(data.user));
-    localStorage.setItem('zap-shift-token', data.token);
-    setUser(data.user);
-    setUserRole(data.user.role);
-  };
-
-  const googleLogin = () => {
-     console.warn("Google Login not yet connected to backend");
-     return Promise.reject("Google Login not implemented on backend");
+  const logout = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      await authApi.logout();
+    } catch (err) {
+      console.error('Logout error:', err);
+    } finally {
+      setUser(null);
+      setUserRole(null);
+      setLoading(false);
+    }
   };
 
   const authInfo = {
     user,
     userRole,
     loading,
+    error,
     registerUser,
     registerRider,
     login,
     logout,
-    googleLogin
+    refreshUser,
+    isAuthenticated: !!user,
   };
 
   return (
