@@ -1,16 +1,18 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { FaHome } from 'react-icons/fa';
-import logo from '@/app/assets/logo.png';
 import img from '@/app/assets/authImage.png';
 
 const AuthLayout = ({ children }) => {
   return (
     <div className="min-h-screen grid lg:grid-cols-2 relative">
       {/* === TOP LEFT FIXED LOGO === */}
-      <Link href="/" className="absolute top-6 left-8 flex items-end z-10 hover:opacity-80 transition">
-        <Image className="w-10 h-10" src={logo} alt="ZapShift Logo" width={40} height={40} />
-        <h1 className="font-bold text-3xl -ms-3">ZapShift</h1>
+      <Link href="/" className="absolute top-6 left-8 flex items-center gap-2 z-20 hover:opacity-80 transition">
+        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-primary/10">
+          <span className="text-secondary font-black text-xl italic">Z</span>
+        </div>
+        <h1 className="text-3xl font-black tracking-tighter text-secondary">
+          Zap<span className="text-primary">Shift</span>
+        </h1>
       </Link>
 
       {/* === TOP RIGHT HOME BUTTON === */}
@@ -19,7 +21,7 @@ const AuthLayout = ({ children }) => {
           <FaHome /> Back to Home
         </button>
       </Link>
-      
+
       {/* LEFT SIDE FORM SECTION */}
       <div className="flex flex-col justify-center px-6 sm:px-12 md:px-20 py-20">
         {children}

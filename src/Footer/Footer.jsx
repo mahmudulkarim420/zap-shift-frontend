@@ -1,17 +1,19 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { FaLinkedinIn, FaFacebookF, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
-import logo from '@/app/assets/logo.png';
 
 const Footer = () => {
   return (
     <footer className="bg-[#0B0B0B] text-white px-5 py-10 sm:px-10 sm:py-14 mb-5 rounded-2xl">
       <div className="max-w-6xl mx-auto text-center">
         {/* Logo */}
-        <div className="flex items-end justify-center gap-2">
-          <Image src={logo} alt="ZapShift Logo" width={40} height={40} />
-          <h2 className="font-bold text-2xl -ms-3.5">ZapShift</h2>
+        <div className="flex items-center justify-center gap-2">
+          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-primary/10">
+            <span className="text-secondary font-black text-xl italic">Z</span>
+          </div>
+          <h2 className="text-3xl font-black tracking-tighter text-white">
+            Zap<span className="text-primary">Shift</span>
+          </h2>
         </div>
 
         {/* Description */}

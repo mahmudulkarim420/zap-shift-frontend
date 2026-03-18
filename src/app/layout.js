@@ -12,6 +12,13 @@ export const metadata = {
   title: "ZapShift – Fast & Reliable Parcel Delivery",
   description:
     "Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.",
+
+  // ✅ Favicon added
+  icons: {
+    icon: [
+      { url: "/logo.png", sizes: "32x32", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {

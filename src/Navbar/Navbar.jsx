@@ -4,8 +4,6 @@ import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaArrowRight, FaBars, FaTimes } from 'react-icons/fa';
-import logo from '@/app/assets/logo.png';
-import Image from 'next/image';
 import { AuthContext } from '../providers/AuthProvider';
 
 const Navbar = () => {
@@ -66,15 +64,13 @@ const Navbar = () => {
     <nav className="mt-5 rounded-2xl bg-white px-5 py-3 shadow-sm">
       <div className="flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-end">
-          <Image
-            className="h-9 w-9"
-            src={logo}
-            alt="ZapShift Logo"
-            width={36}
-            height={36}
-          />
-          <h1 className="-ms-3 text-3xl font-bold text-secondary">ZapShift</h1>
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shrink-0">
+            <span className="text-secondary font-black text-lg italic">Z</span>
+          </div>
+          <h1 className="text-2xl font-black tracking-tight text-secondary">
+            Zap<span className="text-primary">Shift</span>
+          </h1>
         </Link>
 
         {/* Desktop Links */}
