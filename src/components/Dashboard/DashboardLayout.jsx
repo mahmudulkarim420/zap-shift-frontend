@@ -60,6 +60,7 @@ export default function DashboardLayout({ children, roleName }) {
               <NavLink href="/dashboard/admin/users" icon="👥">Manage Users</NavLink>
               <NavLink href="/dashboard/admin/parcels" icon="📦">All Parcels</NavLink>
               <NavLink href="/dashboard/admin/riders" icon="🛵">Manage Riders</NavLink>
+              <NavLink href="/dashboard/admin/role" icon="✦">Manage Role</NavLink>
             </>
           )}
 
