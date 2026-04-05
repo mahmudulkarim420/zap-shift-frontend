@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { createContext, useEffect, useState } from 'react';
-import { authApi } from '@/api/auth';
+import React, { createContext, useEffect, useState } from "react";
+import { authApi } from "@/api/auth";
 
 export const AuthContext = createContext(null);
 
@@ -28,10 +28,12 @@ const AuthProvider = ({ children }) => {
         return result;
       }
     } catch (e) {
-      console.error('Failed to fetch current user', e);
+      // Handle expected 401 errors silently (user not logged in on initial load)
+      console.error("Failed to fetch current user", e);
+      setError(null); // Don't persist error for not-logged-in case
+
       setUser(null);
       setUserRole(null);
-      setError(e?.response?.data?.message || e.message || 'Failed to fetch user');
       return { success: false };
     } finally {
       setLoading(false);
@@ -49,14 +51,16 @@ const AuthProvider = ({ children }) => {
 
       const data = await authApi.register(userData);
 
-      if (data.success) {
-        await refreshUser();
+      if (data.success && data.user) {
+        setUser(data.user);
+        setUserRole(data.user.role);
         return data;
       }
 
-      throw new Error(data.message || 'Registration failed');
+      throw new Error(data.message || "Registration failed");
     } catch (err) {
-      setError(err?.response?.data?.message || err.message || 'Registration failed');
+      const errorMessage = err?.response?.data?.message || err.message || "Registration failed";
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -70,14 +74,16 @@ const AuthProvider = ({ children }) => {
 
       const data = await authApi.registerRider(riderData);
 
-      if (data.success) {
-        await refreshUser();
+      if (data.success && data.user) {
+        setUser(data.user);
+        setUserRole(data.user.role);
         return data;
       }
 
-      throw new Error(data.message || 'Rider registration failed');
+      throw new Error(data.message || "Rider registration failed");
     } catch (err) {
-      setError(err?.response?.data?.message || err.message || 'Rider registration failed');
+      const errorMessage = err?.response?.data?.message || err.message || "Rider registration failed";
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -91,14 +97,23 @@ const AuthProvider = ({ children }) => {
 
       const data = await authApi.login(email, password);
 
-      if (data.success) {
+      // Handle successful login response
+      if (data && data.success && data.user) {
+        setUser(data.user);
+        setUserRole(data.user.role);
+
+        // CRITICAL: Synchronize session before navigation
         await refreshUser();
-        return data;
+
+        return { success: true, user: data.user };
       }
 
-      throw new Error(data.message || 'Login failed');
+      // If we get here, the response wasn't successful
+      throw new Error(data?.message || "Login failed");
     } catch (err) {
-      setError(err?.response?.data?.message || err.message || 'Login failed');
+      const errorMessage = err?.response?.data?.message || err.message || "Login failed";
+      console.error("Login error:", errorMessage);
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -111,7 +126,7 @@ const AuthProvider = ({ children }) => {
       setError(null);
       await authApi.logout();
     } catch (err) {
-      console.error('Logout error:', err);
+      console.error("Logout error:", err);
     } finally {
       setUser(null);
       setUserRole(null);
@@ -132,11 +147,7 @@ const AuthProvider = ({ children }) => {
     isAuthenticated: !!user,
   };
 
-  return (
-    <AuthContext.Provider value={authInfo}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

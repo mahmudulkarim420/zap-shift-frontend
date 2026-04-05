@@ -1,8 +1,12 @@
 import Profile from '@/sections/Profile/profile'
+import ProtectedRoute from '@/components/ProtectedRoute'
+
 export default function page() {
     return (
-        <div>
-            <Profile />
-        </div>
+        <ProtectedRoute>
+            <div>
+                <Profile />
+            </div>
+        </ProtectedRoute>
     )
 }

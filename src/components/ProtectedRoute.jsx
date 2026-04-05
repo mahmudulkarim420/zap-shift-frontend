@@ -18,9 +18,9 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        router.push('/login');
+        router.replace('/login');
       } else if (allowedRoles.length > 0 && !allowedRoles.includes(userRole)) {
-        router.push('/'); // Redirect to home if role is not authorized
+        router.replace('/'); // Redirect to home if role is not authorized
       }
     }
   }, [user, userRole, loading, router, allowedRoles]);
@@ -33,10 +33,8 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
     );
   }
 
-  // If we have a user and (no role requirement OR role matches)
-  if (user && (allowedRoles.length === 0 || allowedRoles.includes(userRole))) {
-    return <>{children}</>;
-  }
+  // Final authorization verification
+  const isAuthorized = user && (allowedRoles.length === 0 || allowedRoles.includes(userRole));
 
-  return null;
+  return isAuthorized ? <>{children}</> : null;
 }

@@ -1,9 +1,10 @@
 import AdminDashboard from "@/sections/Admin Dashboard/AdminDashboard";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function AdminDashboardPage() {
   return (
-    <div>
+    <ProtectedRoute allowedRoles={["admin"]}>
       <AdminDashboard />
-    </div>
+    </ProtectedRoute>
   );
 }

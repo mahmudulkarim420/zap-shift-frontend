@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { FaHome } from 'react-icons/fa';
 import img from '@/app/assets/authImage.png';
 
@@ -29,7 +30,14 @@ const AuthLayout = ({ children }) => {
 
       {/* RIGHT SIDE IMAGE SECTION */}
       <div className="hidden lg:flex bg-[#FAFDF0] items-center justify-center">
-        <Image src={img} alt="Illustration" className="w-[80%] h-auto" width={600} height={600} priority />
+        <NextImage 
+          src={img} 
+          alt="Illustration" 
+          className="w-[80%] h-auto" 
+          width={600} 
+          height={600} 
+          priority 
+        />
       </div>
     </div>
   );
