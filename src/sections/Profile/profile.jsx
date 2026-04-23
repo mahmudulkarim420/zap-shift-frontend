@@ -1,7 +1,9 @@
 'use client';
+import { useMemo } from 'react';
 
 import RoleGuard from "@/components/RoleGuard";
-import { useAuth } from "@/hooks/useAuth";
+import { useUser } from "@clerk/nextjs";
+import { normalizeRole } from "@/utils/roleUtils";
 
 const roleConfig = {
     admin: {
@@ -40,10 +42,20 @@ const riderStats = [
 ];
 
 export default function DynamicProfile() {
-    const { user, userRole } = useAuth();
-    const role = roleConfig[userRole] ?? roleConfig.user;
-    const initial = user?.name?.charAt(0)?.toUpperCase()
-        || user?.email?.charAt(0)?.toUpperCase()
+    const { user } = useUser();
+    
+    const userRole = useMemo(() => {
+        if (!user) return 'user';
+        if (user.publicMetadata?.role) return user.publicMetadata.role;
+        const email = user.primaryEmailAddress?.emailAddress || '';
+        if (email.toLowerCase().includes('admin')) return 'admin';
+        return 'user';
+    }, [user]);
+
+    const normalizedUserRole = normalizeRole(userRole);
+    const role = roleConfig[normalizedUserRole] ?? roleConfig.user;
+    const initial = user?.fullName?.charAt(0)?.toUpperCase()
+        || user?.primaryEmailAddress?.emailAddress?.charAt(0)?.toUpperCase()
         || "U";
 
     return (
@@ -71,10 +83,10 @@ export default function DynamicProfile() {
                                             Account Overview
                                         </p>
                                         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white leading-snug">
-                                            {user?.name || "Your Profile"}
+                                            {user?.fullName || "Your Profile"}
                                         </h1>
                                         <p className="text-white/50 text-xs sm:text-sm mt-1">
-                                            {user?.email || "No email on record"}
+                                            {user?.primaryEmailAddress?.emailAddress || "No email on record"}
                                         </p>
                                     </div>
                                 </div>
@@ -113,8 +125,8 @@ export default function DynamicProfile() {
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {[
-                                            { label: "Full Name", value: user?.name || "Not Provided" },
-                                            { label: "Email Address", value: user?.email || "Not Provided" },
+                                            { label: "Full Name", value: user?.fullName || "Not Provided" },
+                                            { label: "Email Address", value: user?.primaryEmailAddress?.emailAddress || "Not Provided" },
                                             { label: "Account Status", value: null, isStatus: true },
                                             { label: "Member Since", value: "March 2024" },
                                         ].map((item, i) => (
@@ -140,7 +152,7 @@ export default function DynamicProfile() {
                                 </div>
 
                                 {/* Rider Stats — conditional */}
-                                {userRole === "rider" && (
+                                {normalizedUserRole === "rider" && (
                                     <div className="bg-secondary rounded-2xl p-6 sm:p-7">
                                         <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">
                                             Rider Performance
@@ -196,9 +208,9 @@ export default function DynamicProfile() {
                                         </div>
                                         <div className="min-w-0">
                                             <p className="font-bold text-secondary text-sm truncate">
-                                                {user?.name || "Unknown User"}
+                                                {user?.fullName || "Unknown User"}
                                             </p>
-                                            <p className="text-xs text-gray-400 truncate">{user?.email}</p>
+                                            <p className="text-xs text-gray-400 truncate">{user?.primaryEmailAddress?.emailAddress}</p>
                                         </div>
                                     </div>
 

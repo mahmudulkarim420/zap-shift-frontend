@@ -1,6 +1,7 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import AuthProvider from "../providers/AuthProvider";
+
 import LayoutClient from "./LayoutClient";
 
 const geistSans = Geist({
@@ -22,12 +23,18 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+  if (!publishableKey) {
+    console.warn("Clerk Publishable Key is missing from .env");
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} antialiased`}>
-        <AuthProvider>
+        <ClerkProvider publishableKey={publishableKey}>
           <LayoutClient>{children}</LayoutClient>
-        </AuthProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

@@ -1,9 +1,10 @@
 'use client';
 
-import { useAuth } from '@/hooks/useAuth';
+import { useUser, useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import Loader from '@/components/Loader/Loader';
+import { normalizeRole } from '@/utils/roleUtils';
 
 /**
  * Higher-order component/wrapper to protect routes.
@@ -12,18 +13,35 @@ import Loader from '@/components/Loader/Loader';
  * @param {Array<string>} [props.allowedRoles] - List of roles that can access this route. If empty, any logged in user can access.
  */
 export default function ProtectedRoute({ children, allowedRoles = [] }) {
-  const { user, userRole, loading } = useAuth();
+  const { isLoaded, user } = useUser();
+  const { userId } = useAuth();
   const router = useRouter();
+
+  // Helper to determine role from metadata or email fallback
+  const userRole = useMemo(() => {
+    if (!user) return 'user';
+    if (user.publicMetadata?.role) return user.publicMetadata.role;
+    const email = user.primaryEmailAddress?.emailAddress || '';
+    if (email.toLowerCase().includes('admin')) return 'admin';
+    return 'user';
+  }, [user]);
+  const loading = !isLoaded;
+
+  const normalizedUserRole = normalizeRole(userRole);
+  const allowedRolesDep = allowedRoles ? allowedRoles.join(',') : '';
+  const normalizedAllowedRoles = useMemo(() => allowedRoles ? allowedRoles.map(normalizeRole) : [], [allowedRolesDep]);
 
   useEffect(() => {
     if (!loading) {
-      if (!user) {
-        router.replace('/login');
-      } else if (allowedRoles.length > 0 && !allowedRoles.includes(userRole)) {
-        router.replace('/'); // Redirect to home if role is not authorized
+      if (!userId) {
+        router.replace('/sign-in');
+      } else if (normalizedAllowedRoles.length > 0 && normalizedUserRole && !normalizedAllowedRoles.includes(normalizedUserRole)) {
+        if (normalizedUserRole === 'admin') router.replace('/dashboard/admin');
+        else if (normalizedUserRole === 'rider') router.replace('/dashboard/rider');
+        else router.replace('/dashboard/user');
       }
     }
-  }, [user, userRole, loading, router, allowedRoles]);
+  }, [userId, normalizedUserRole, loading, router, normalizedAllowedRoles]);
 
   if (loading) {
     return (
@@ -34,7 +52,7 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
   }
 
   // Final authorization verification
-  const isAuthorized = user && (allowedRoles.length === 0 || allowedRoles.includes(userRole));
+  const isAuthorized = user && (normalizedAllowedRoles.length === 0 || (normalizedUserRole && normalizedAllowedRoles.includes(normalizedUserRole)));
 
   return isAuthorized ? <>{children}</> : null;
 }

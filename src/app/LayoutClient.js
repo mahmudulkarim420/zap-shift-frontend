@@ -7,8 +7,8 @@ import Footer from "@/Footer/Footer";
 export default function LayoutClient({ children }) {
   const pathname = usePathname();
   
-  // Check if current path is login or register or dashboard
-  const isAuthPage = pathname === '/login' || pathname === '/register';
+  // Check if current path is sign-in or sign-up or dashboard
+  const isAuthPage = pathname === '/sign-in' || pathname === '/sign-up';
   const isDashboardPage = pathname.startsWith('/dashboard');
 
   if (isAuthPage || isDashboardPage) {

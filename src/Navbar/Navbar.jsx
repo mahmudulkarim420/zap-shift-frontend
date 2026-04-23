@@ -1,25 +1,15 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaArrowRight, FaBars, FaTimes } from 'react-icons/fa';
-import { AuthContext } from '../providers/AuthProvider';
+import { useAuth, UserButton } from '@clerk/nextjs';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, userRole, logout } = useContext(AuthContext);
   const pathname = usePathname();
-
-  const handleLogout = () => {
-    logout()
-      .then(() => {
-        console.log('Logged out successfully');
-      })
-      .catch((error) => {
-        console.error('Logout error:', error.message);
-      });
-  };
+  const { isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => {
     setIsOpen(false);
@@ -43,22 +33,6 @@ const Navbar = () => {
     { href: '/about', label: 'About Us' },
     { href: '/pricing', label: 'Pricing' },
   ];
-
-  const dropdownLinks = {
-    user: [
-      { href: '/profile', label: 'Profile' },
-      { href: '/track-order', label: 'Track Order' },
-    ],
-    rider: [
-      { href: '/dashboard/rider', label: 'Rider Dashboard' },
-      { href: '/profile', label: 'Profile' },
-    ],
-    admin: [
-      { href: '/profile', label: 'Profile' },
-      { href: '/dashboard/admin', label: 'Admin Dashboard' },
-      { href: '/track-order', label: 'Track Order' },
-    ],
-  };
 
   return (
     <nav className="mt-5 rounded-2xl bg-white px-5 py-3 shadow-sm">
@@ -86,60 +60,47 @@ const Navbar = () => {
 
         {/* Desktop Buttons */}
         <div className="hidden items-center gap-4 lg:flex">
-          {user ? (
-            <div className="relative group">
-              <div className="flex items-center gap-2 py-2 cursor-pointer">
-                <div className="w-10 h-10 rounded-full bg-primary text-black flex items-center justify-center font-extrabold text-sm shadow-md transition group-hover:scale-105">
-                  {user.name?.charAt(0) || user.email?.charAt(0)}
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs font-black text-secondary uppercase tracking-widest leading-none">
-                    {user.name || user.email.split('@')[0]}
-                  </span>
-                  <span className="text-[10px] font-bold text-primary uppercase tracking-tighter">
-                    {userRole}
-                  </span>
-                </div>
-              </div>
-
-              {/* Dropdown Menu */}
-              <div className="absolute right-0 mt-0 w-56 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                <div className="bg-white border border-gray-100 rounded-2xl shadow-2xl shadow-black/5 overflow-hidden backdrop-blur-sm">
-                  <div className="py-2">
-                    {dropdownLinks[userRole]?.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="block px-5 py-3 text-xs font-bold text-gray-600 hover:bg-primary hover:text-black transition uppercase tracking-widest"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                    <div className="border-t border-gray-50 my-1"></div>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-5 py-3 text-xs font-bold text-red-500 hover:bg-red-50 transition uppercase tracking-widest"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
+          {isLoaded && (
             <>
-              <Link
-                href="/login"
-                className="rounded-xl border border-gray-200 bg-gray-50 px-5 py-2.5 text-xs font-bold text-gray-500 transition hover:bg-gray-100 hover:text-secondary uppercase tracking-widest"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/register"
-                className="rounded-xl border border-gray-200 bg-gray-50 px-5 py-2.5 text-xs font-bold text-gray-500 transition hover:bg-gray-100 hover:text-secondary uppercase tracking-widest"
-              >
-                Sign Up
-              </Link>
+              {isSignedIn ? (
+                <div className="flex items-center gap-4">
+                  <Link
+                    href="/dashboard"
+                    className="text-xs font-bold text-gray-500 hover:text-secondary uppercase tracking-widest transition"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/profile"
+                    className="text-xs font-bold text-gray-500 hover:text-secondary uppercase tracking-widest transition"
+                  >
+                    Profile
+                  </Link>
+                  <UserButton 
+                    afterSignOutUrl="/"
+                    appearance={{
+                      elements: {
+                        userButtonAvatarBox: "w-10 h-10 shadow-md",
+                      }
+                    }}
+                  />
+                </div>
+              ) : (
+                <>
+                  <Link
+                    href="/sign-in"
+                    className="rounded-xl border border-gray-200 bg-gray-50 px-5 py-2.5 text-xs font-bold text-gray-500 transition hover:bg-gray-100 hover:text-secondary uppercase tracking-widest"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/sign-up"
+                    className="rounded-xl border border-gray-200 bg-gray-50 px-5 py-2.5 text-xs font-bold text-gray-500 transition hover:bg-gray-100 hover:text-secondary uppercase tracking-widest"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </>
           )}
 
@@ -185,44 +146,30 @@ const Navbar = () => {
           </ul>
 
           <div className="mt-4 flex flex-col gap-3">
-            {user ? (
+            {isLoaded && (
               <>
-                <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-2xl">
-                  <div className="w-10 h-10 rounded-full bg-primary text-black flex items-center justify-center font-bold shadow-sm">
-                    {user.name?.charAt(0) || user.email?.charAt(0)}
+                {isSignedIn ? (
+                  <div className="flex justify-center p-2">
+                    <UserButton afterSignOutUrl="/" />
                   </div>
-                  <div>
-                    <p className="text-sm font-extrabold text-secondary tracking-tight">
-                      {user.name || user.email.split('@')[0]}
-                    </p>
-                    <p className="text-[10px] text-gray-500 font-medium truncate max-w-[150px]">
-                      {user.email}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-center text-xs font-bold text-gray-500 transition hover:bg-gray-100 hover:text-secondary uppercase tracking-widest"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/register"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
-                >
-                  Sign Up
-                </Link>
+                ) : (
+                  <>
+                    <Link
+                      href="/sign-in"
+                      onClick={() => setIsOpen(false)}
+                      className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/sign-up"
+                      onClick={() => setIsOpen(false)}
+                      className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50"
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                )}
               </>
             )}
 
