@@ -2,12 +2,19 @@
 
 import Image from 'next/image';
 import image from '@/app/assets/agent-pending.png';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { FaCheckCircle, FaSpinner } from 'react-icons/fa';
+
+import { DollarSign, Clock, MapPin, ShieldCheck, RefreshCw } from "lucide-react";
 
 const perks = [
-  { icon: '💰', title: 'Daily Earnings', desc: 'Get paid daily with transparent per-delivery rates.' },
-  { icon: '🕐', title: 'Flexible Hours', desc: 'Work on your schedule — morning, afternoon or evening.' },
-  { icon: '📍', title: 'Local Routes', desc: 'Deliver in your own area — no long-distance required.' },
-  { icon: '🛡️', title: 'Full Support', desc: 'Dedicated rider support team available 24/7.' },
+  { icon: <DollarSign className="w-5 h-5" />, title: 'Daily Earnings', desc: 'Get paid daily with transparent per-delivery rates.' },
+  { icon: <Clock className="w-5 h-5" />, title: 'Flexible Hours', desc: 'Work on your schedule — morning, afternoon or evening.' },
+  { icon: <MapPin className="w-5 h-5" />, title: 'Local Routes', desc: 'Deliver in your own area — no long-distance required.' },
+  { icon: <ShieldCheck className="w-5 h-5" />, title: 'Full Support', desc: 'Dedicated rider support team available 24/7.' },
 ];
 
 const inputClass = `h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4
@@ -15,20 +22,80 @@ const inputClass = `h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-
                     focus:border-primary focus:ring-2 focus:ring-primary/20
                     transition-all duration-200`;
 
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-
 const Rider = () => {
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  
+  const [warehouses, setWarehouses] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fetch real warehouses for the dropdown
+  useEffect(() => {
+    const fetchWarehouses = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/infra/warehouses`);
+        if (res.data.success) {
+          setWarehouses(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch warehouses:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchWarehouses();
+  }, []);
 
   const onSubmit = async (data) => {
-    // Auth logic removed as per request
-    console.log("Rider application submitted:", data);
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/rider-register`, {
+        ...data,
+        age: parseInt(data.age),
+        warehouseId: data.warehouseId
+      });
+
+      if (res.data.success) {
+        setSuccess(true);
+        reset();
+        // Redirect after a few seconds
+        setTimeout(() => {
+          router.push('/');
+        }, 3000);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <main className="min-h-screen py-10 sm:py-14">
+    <main className="min-h-screen py-10 sm:py-14 relative">
+      
+      {/* ── Success Overlay ── */}
+      {success && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-[2.5rem] p-10 shadow-2xl max-w-sm w-full text-center animate-in fade-in zoom-in duration-300">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <FaCheckCircle className="text-green-500 text-4xl" />
+            </div>
+            <h3 className="text-2xl font-black text-secondary mb-2">Application Sent!</h3>
+            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+              Your profile is under review. Our team will contact you within 48 hours.
+            </p>
+            <div className="bg-gray-50 rounded-2xl py-3 text-xs font-bold text-gray-500 uppercase tracking-widest">
+              Redirecting to home...
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden">
 
         {/* ── Header Band ── */}
@@ -96,7 +163,7 @@ const Rider = () => {
                     <label className="text-xs font-bold text-secondary uppercase tracking-wide">
                       Age
                     </label>
-                    <input type="number" placeholder="e.g. 24" min="18" className={inputClass} {...register('age')} />
+                    <input type="number" placeholder="e.g. 24" min="18" className={inputClass} {...register('age', { required: true })} />
                   </div>
                 </div>
 
@@ -122,7 +189,7 @@ const Rider = () => {
                     <label className="text-xs font-bold text-secondary uppercase tracking-wide">
                       NID Number
                     </label>
-                    <input type="text" placeholder="National ID No." className={inputClass} {...register('nid')} />
+                    <input type="text" placeholder="National ID No." className={inputClass} {...register('nid', { required: true })} />
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-bold text-secondary uppercase tracking-wide">
@@ -137,25 +204,39 @@ const Rider = () => {
                   <label className="text-xs font-bold text-secondary uppercase tracking-wide">
                     Preferred Warehouse
                   </label>
-                  <select className={`${inputClass} appearance-none cursor-pointer`} {...register('warehouse')}>
-                    <option value="">Select a warehouse</option>
-                    <option>Dhaka Central Hub</option>
-                    <option>Chittagong Port Hub</option>
-                    <option>Sylhet Hub</option>
-                    <option>Rajshahi Hub</option>
-                    <option>Khulna Hub</option>
-                  </select>
+                  <div className="relative">
+                    <select 
+                      className={`${inputClass} appearance-none cursor-pointer disabled:opacity-50`} 
+                      {...register('warehouseId', { required: true })}
+                      disabled={loading}
+                    >
+                      <option value="">{loading ? "Loading warehouses..." : "Select a warehouse"}</option>
+                      {warehouses.map(w => (
+                        <option key={w._id} value={w._id}>{w.name} ({w.area || w.city})</option>
+                      ))}
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">▼</div>
+                  </div>
                 </div>
+
+                {/* Error message */}
+                {error && (
+                  <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3 text-red-600 text-xs font-bold uppercase tracking-widest">
+                    {error}
+                  </div>
+                )}
 
                 {/* Submit */}
                 <div className="pt-2">
                   <button
                     type="submit"
+                    disabled={submitting}
                     className="w-full h-12 bg-primary text-black font-extrabold text-sm sm:text-base
                                 rounded-full shadow hover:brightness-105 active:scale-95
-                                transition-all duration-200 uppercase tracking-widest"
+                                transition-all duration-200 uppercase tracking-widest disabled:opacity-50
+                                flex items-center justify-center gap-2"
                   >
-                    Submit Application
+                    {submitting ? <FaSpinner className="animate-spin" /> : "Submit Application"}
                   </button>
                   <p className="text-xs text-gray-400 text-center mt-3">
                     Our team will review your application and contact you within 48 hours.

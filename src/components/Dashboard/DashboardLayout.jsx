@@ -6,6 +6,23 @@ import { useState, useMemo } from 'react';
 import { IoIosArrowBack } from "react-icons/io";
 import { normalizeRole } from '@/utils/roleUtils';
 import { useSession, signOut } from 'next-auth/react';
+import { 
+  LayoutDashboard, 
+  Package, 
+  Users, 
+  Bike, 
+  ShieldCheck, 
+  BarChart3, 
+  Truck, 
+  DollarSign, 
+  User, 
+  PlusCircle, 
+  Layers, 
+  Search,
+  LogOut,
+  Menu,
+  X
+} from "lucide-react";
 
 export default function DashboardLayout({ children }) {
   const { data: session, status } = useSession();
@@ -76,7 +93,7 @@ export default function DashboardLayout({ children }) {
             onClick={() => setMobileOpen(false)}
             className="lg:hidden p-2 text-white/60 hover:text-white"
           >
-            ✕
+            <X className="w-6 h-6" />
           </button>
         </div>
 
@@ -109,10 +126,10 @@ export default function DashboardLayout({ children }) {
           <NavLink
             collapsed={collapsed && !mobileOpen}
             href={`/dashboard/${normalizedUserRole}`}
-            icon="⊞"
+            icon={<LayoutDashboard className="w-5 h-5" />}
             active={pathname === `/dashboard/${normalizedUserRole}`}
           >
-            Overview
+            Admin Overview
           </NavLink>
 
           {/* ── ADMIN NAV ── */}
@@ -121,23 +138,23 @@ export default function DashboardLayout({ children }) {
               <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
                 Management
               </p>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/parcels" icon="📦" active={pathname === '/dashboard/admin/parcels'}>
-                Manage Parcels
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/all-parcels" icon={<Package className="w-5 h-5" />} active={pathname === '/dashboard/admin/all-parcels'}>
+                Parcel Inventory
               </NavLink>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/users" icon="👥" active={pathname === '/dashboard/admin/users'}>
-                All Users
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/all-users" icon={<Users className="w-5 h-5" />} active={pathname === '/dashboard/admin/all-users'}>
+                User Directory
               </NavLink>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/riders" icon="🛵" active={pathname === '/dashboard/admin/riders'}>
-                Fleet Status
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/rider-management" icon={<Bike className="w-5 h-5" />} active={pathname === '/dashboard/admin/rider-management'}>
+                Rider Management
               </NavLink>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/role" icon="✦" active={pathname === '/dashboard/admin/role'}>
-                Permissions
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/role-management" icon={<ShieldCheck className="w-5 h-5" />} active={pathname === '/dashboard/admin/role-management'}>
+                Role Permissions
               </NavLink>
               <p className={`px-4 pt-3 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
                 Analytics
               </p>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/stats" icon="📊" active={pathname === '/dashboard/admin/stats'}>
-                Revenue Metrics
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/statistics" icon={<BarChart3 className="w-5 h-5" />} active={pathname === '/dashboard/admin/statistics'}>
+                Financial Reports
               </NavLink>
             </div>
           )}
@@ -148,13 +165,13 @@ export default function DashboardLayout({ children }) {
               <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
                 Delivery Ops
               </p>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/deliveries" icon="🚚" active={pathname === '/dashboard/rider/deliveries'}>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/deliveries" icon={<Truck className="w-5 h-5" />} active={pathname === '/dashboard/rider/deliveries'}>
                 Available Deliveries
               </NavLink>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/earnings" icon="💰" active={pathname === '/dashboard/rider/earnings'}>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/earnings" icon={<DollarSign className="w-5 h-5" />} active={pathname === '/dashboard/rider/earnings'}>
                 My Earnings
               </NavLink>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/profile" icon="👤" active={pathname === '/dashboard/rider/profile'}>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/profile" icon={<User className="w-5 h-5" />} active={pathname === '/dashboard/rider/profile'}>
                 Work Profile
               </NavLink>
             </div>
@@ -166,13 +183,13 @@ export default function DashboardLayout({ children }) {
               <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
                 Shipments
               </p>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/book-parcel" icon="📬" active={pathname === '/dashboard/book-parcel'}>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/book-parcel" icon={<PlusCircle className="w-5 h-5" />} active={pathname === '/dashboard/book-parcel'}>
                 Book a Parcel
               </NavLink>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/my-orders" icon="🗂️" active={pathname === '/dashboard/my-orders'}>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/my-orders" icon={<Layers className="w-5 h-5" />} active={pathname === '/dashboard/my-orders'}>
                 My Orders
               </NavLink>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/track-order" icon="🔍" active={pathname === '/dashboard/track-order'}>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/track-order" icon={<Search className="w-5 h-5" />} active={pathname === '/dashboard/track-order'}>
                 Track Order
               </NavLink>
             </div>
@@ -183,7 +200,7 @@ export default function DashboardLayout({ children }) {
             <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
               Account
             </p>
-            <NavLink collapsed={collapsed && !mobileOpen} href="/profile" icon="🧑" active={pathname === '/profile'}>
+            <NavLink collapsed={collapsed && !mobileOpen} href="/profile" icon={<User className="w-5 h-5" />} active={pathname === '/profile'}>
               My Profile
             </NavLink>
           </div>
@@ -195,7 +212,7 @@ export default function DashboardLayout({ children }) {
             onClick={() => signOut({ callbackUrl: '/sign-in' })}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-400 hover:bg-red-500/10 transition-colors group ${collapsed && !mobileOpen ? 'justify-center px-0' : ''}`}
           >
-            <span className="text-lg transition-transform group-hover:-translate-x-1">↩</span>
+            <LogOut className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
             {(!collapsed || mobileOpen) && <span>Sign Out</span>}
           </button>
         </div>
@@ -213,12 +230,12 @@ export default function DashboardLayout({ children }) {
               onClick={toggleMobile}
               className="lg:hidden p-2.5 rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
             >
-              <span className="text-xl">☰</span>
+              <Menu className="w-6 h-6" />
             </button>
 
             <div className="hidden sm:block">
               <h1 className="text-lg lg:text-xl font-black text-gray-900 tracking-tight leading-none">
-                Hello, {user?.name?.split(' ')[0] || 'Member'} 👋
+                Hello, {user?.name?.split(' ')[0] || 'Member'}
               </h1>
               <p className="text-[11px] font-bold text-gray-400 mt-1 uppercase tracking-widest">
                 Authenticated as <span className="text-[#033C3F]">{normalizedUserRole}</span>

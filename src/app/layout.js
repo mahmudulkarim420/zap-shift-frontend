@@ -17,8 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "ZapShift – Fast & Reliable Parcel Delivery",
-  description:
-    "Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle.",
+  description: "Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle.",
 
   icons: {
     icon: [{ url: "/logo.png", sizes: "32x32", type: "image/png" }],
@@ -28,9 +27,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SessionProvider>
           <LayoutClient>{children}</LayoutClient>
         </SessionProvider>
