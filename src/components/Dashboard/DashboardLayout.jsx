@@ -1,38 +1,27 @@
 'use client';
 
-import { useUser, useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useMemo } from 'react';
 import { IoIosArrowBack } from "react-icons/io";
 import { normalizeRole } from '@/utils/roleUtils';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function DashboardLayout({ children }) {
-  const { isLoaded, user } = useUser();
-  const { signOut } = useAuth();
+  const { data: session, status } = useSession();
+  const isLoaded = status !== "loading";
+  const isSignedIn = status === "authenticated";
+  const user = session?.user;
+  
   const router = useRouter();
   const pathname = usePathname();
   
-  // Get role from Clerk metadata or email fallback
-  const userRole = useMemo(() => {
-    if (!user) return 'user';
-    if (user.publicMetadata?.role) return user.publicMetadata.role;
-    const email = user.primaryEmailAddress?.emailAddress || '';
-    if (email.toLowerCase().includes('admin')) return 'admin';
-    return 'user';
-  }, [user]);
-  const normalizedUserRole = normalizeRole(userRole);
+  // Role resolution from Next-Auth session
+  const rawRole = user?.role || 'user';
+  const normalizedUserRole = normalizeRole ? normalizeRole(rawRole) : rawRole;
 
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  if (!isLoaded) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-[#f0f2f7]">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#033C3F] border-t-transparent"></div>
-      </div>
-    );
-  }
 
   const toggleSidebar = () => setCollapsed(!collapsed);
   const toggleMobile = () => setMobileOpen(!mobileOpen);
@@ -94,8 +83,12 @@ export default function DashboardLayout({ children }) {
         {/* User Card */}
         {(!collapsed || mobileOpen) && (
           <div className="mx-4 mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-base bg-[#C8FF65] text-[#033C3F] shrink-0 shadow-lg shadow-[#C8FF65]/10">
-              {user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase()}
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-base bg-[#C8FF65] text-[#033C3F] shrink-0 shadow-lg shadow-[#C8FF65]/10 overflow-hidden">
+              {user?.image ? (
+                <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || 'U'
+              )}
             </div>
             <div className="min-w-0">
               <p className="text-white text-sm font-bold truncate">
@@ -113,89 +106,84 @@ export default function DashboardLayout({ children }) {
           <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
             Menu
           </p>
-          <NavLink 
-            collapsed={collapsed && !mobileOpen} 
-            href={`/dashboard/${normalizedUserRole}`} 
+          <NavLink
+            collapsed={collapsed && !mobileOpen}
+            href={`/dashboard/${normalizedUserRole}`}
             icon="⊞"
             active={pathname === `/dashboard/${normalizedUserRole}`}
           >
             Overview
           </NavLink>
 
+          {/* ── ADMIN NAV ── */}
           {normalizedUserRole === 'admin' && (
             <div className="pt-4 space-y-1.5">
               <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
                 Management
               </p>
-              <NavLink 
-                collapsed={collapsed && !mobileOpen} 
-                href="/dashboard/admin/users" 
-                icon="👥"
-                active={pathname === '/dashboard/admin/users'}
-              >
-                User Base
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/parcels" icon="📦" active={pathname === '/dashboard/admin/parcels'}>
+                Manage Parcels
               </NavLink>
-              <NavLink 
-                collapsed={collapsed && !mobileOpen} 
-                href="/dashboard/admin/parcels" 
-                icon="📦"
-                active={pathname === '/dashboard/admin/parcels'}
-              >
-                All Orders
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/users" icon="👥" active={pathname === '/dashboard/admin/users'}>
+                All Users
               </NavLink>
-              <NavLink 
-                collapsed={collapsed && !mobileOpen} 
-                href="/dashboard/admin/riders" 
-                icon="🛵"
-                active={pathname === '/dashboard/admin/riders'}
-              >
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/riders" icon="🛵" active={pathname === '/dashboard/admin/riders'}>
                 Fleet Status
               </NavLink>
-              <NavLink 
-                collapsed={collapsed && !mobileOpen} 
-                href="/dashboard/admin/role" 
-                icon="✦"
-                active={pathname === '/dashboard/admin/role'}
-              >
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/role" icon="✦" active={pathname === '/dashboard/admin/role'}>
                 Permissions
+              </NavLink>
+              <p className={`px-4 pt-3 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
+                Analytics
+              </p>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/admin/stats" icon="📊" active={pathname === '/dashboard/admin/stats'}>
+                Revenue Metrics
               </NavLink>
             </div>
           )}
 
+          {/* ── RIDER NAV ── */}
           {normalizedUserRole === 'rider' && (
             <div className="pt-4 space-y-1.5">
-               <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
+              <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
                 Delivery Ops
               </p>
-              <NavLink 
-                collapsed={collapsed && !mobileOpen} 
-                href="/dashboard/rider/deliveries" 
-                icon="🚚"
-                active={pathname === '/dashboard/rider/deliveries'}
-              >
-                My Tasks
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/deliveries" icon="🚚" active={pathname === '/dashboard/rider/deliveries'}>
+                Available Deliveries
               </NavLink>
-              <NavLink 
-                collapsed={collapsed && !mobileOpen} 
-                href="/dashboard/rider/profile" 
-                icon="👤"
-                active={pathname === '/dashboard/rider/profile'}
-              >
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/earnings" icon="💰" active={pathname === '/dashboard/rider/earnings'}>
+                My Earnings
+              </NavLink>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/profile" icon="👤" active={pathname === '/dashboard/rider/profile'}>
                 Work Profile
               </NavLink>
             </div>
           )}
 
+          {/* ── USER NAV ── */}
+          {normalizedUserRole === 'user' && (
+            <div className="pt-4 space-y-1.5">
+              <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
+                Shipments
+              </p>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/book-parcel" icon="📬" active={pathname === '/dashboard/book-parcel'}>
+                Book a Parcel
+              </NavLink>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/my-orders" icon="🗂️" active={pathname === '/dashboard/my-orders'}>
+                My Orders
+              </NavLink>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/track-order" icon="🔍" active={pathname === '/dashboard/track-order'}>
+                Track Order
+              </NavLink>
+            </div>
+          )}
+
+          {/* ── ACCOUNT (All Roles) ── */}
           <div className="pt-4 space-y-1.5">
             <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
               Account
             </p>
-            <NavLink 
-              collapsed={collapsed && !mobileOpen} 
-              href="/profile" 
-              icon="👤"
-              active={pathname === '/profile'}
-            >
+            <NavLink collapsed={collapsed && !mobileOpen} href="/profile" icon="🧑" active={pathname === '/profile'}>
               My Profile
             </NavLink>
           </div>
@@ -204,7 +192,7 @@ export default function DashboardLayout({ children }) {
         {/* Sidebar Footer / Logout */}
         <div className="p-4 border-t border-white/5 bg-white/[0.02]">
           <button
-            onClick={async () => { await signOut(); router.push('/sign-in'); }}
+            onClick={() => signOut({ callbackUrl: '/sign-in' })}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-400 hover:bg-red-500/10 transition-colors group ${collapsed && !mobileOpen ? 'justify-center px-0' : ''}`}
           >
             <span className="text-lg transition-transform group-hover:-translate-x-1">↩</span>
@@ -243,8 +231,12 @@ export default function DashboardLayout({ children }) {
               <p className="text-xs font-bold text-gray-800">{user?.email}</p>
               <span className="px-2 py-0.5 rounded text-[9px] font-black bg-emerald-50 text-emerald-600 uppercase">System Active</span>
             </div>
-            <div className="w-10 h-10 rounded-2xl bg-secondary flex items-center justify-center text-primary font-black text-sm shadow-xl shadow-secondary/10 border border-secondary/10">
-              {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+            <div className="w-10 h-10 rounded-2xl bg-secondary flex items-center justify-center text-primary font-black text-sm shadow-xl shadow-secondary/10 border border-secondary/10 overflow-hidden">
+              {user?.image ? (
+                <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || 'U'
+              )}
             </div>
           </div>
         </header>

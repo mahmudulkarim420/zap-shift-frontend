@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
+import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -19,23 +20,48 @@ import customerImg from '@/app/assets/customer-top.png';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
   useEffect(() => {
-    fetch('/reviews.json')
-      .then((res) => res.json())
-      .then((data) => setReviews(data))
-      .catch((err) => console.error('Failed to load reviews:', err));
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/reviews`);
+        if (response.data.success) {
+          setReviews(response.data.reviews);
+        }
+      } catch (err) {
+        console.error('Failed to load reviews:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReviews();
   }, []);
+
+  // Loading skeleton matching card shape
+  const SkeletonReview = () => (
+    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-10 h-72 animate-pulse">
+      <div className="w-8 h-8 bg-white/20 rounded-lg mb-4" />
+      <div className="h-4 bg-white/10 rounded-full w-full mb-2" />
+      <div className="h-4 bg-white/10 rounded-full w-4/5 mb-2" />
+      <div className="h-4 bg-white/10 rounded-full w-2/3 mb-6" />
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-white/20" />
+        <div className="space-y-2">
+          <div className="h-3 bg-white/20 rounded-full w-24" />
+          <div className="h-2 bg-white/10 rounded-full w-16" />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <section className="relative w-full">
 
       {/* Section Header */}
       <div className="text-center mb-10 sm:mb-12">
-
-        {/* Decorative customer image */}
         <div className="flex justify-center mb-4">
           <Image
             src={customerImg}
@@ -59,12 +85,16 @@ const Reviews = () => {
       </div>
 
       {/* Swiper Carousel */}
-      {reviews.length > 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map(i => <SkeletonReview key={i} />)}
+        </div>
+      ) : reviews.length > 0 ? (
         <div className="relative">
           <Swiper
             effect="coverflow"
             grabCursor={true}
-            loop={true}
+            loop={reviews.length >= 3}
             centeredSlides={true}
             breakpoints={{
               0: { slidesPerView: 1 },
@@ -101,24 +131,17 @@ const Reviews = () => {
             className="pb-12"
           >
             {reviews.map((review) => (
-              <SwiperSlide key={review.id}>
+              <SwiperSlide key={review._id}>
                 <ReviewCard review={review} />
               </SwiperSlide>
             ))}
           </Swiper>
 
-          {/* Custom Pagination Dots */}
           <div className="reviews-pagination flex justify-center gap-2 mt-2" />
         </div>
       ) : (
-        /* Loading skeleton */
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="bg-gray-100 animate-pulse rounded-2xl h-48 w-full"
-            />
-          ))}
+        <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+           <p className="text-gray-400 font-bold uppercase tracking-widest text-sm">No reviews found yet</p>
         </div>
       )}
 

@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import RoleGuard from "@/components/RoleGuard";
 import DashboardLayout from "@/components/Dashboard/DashboardLayout";
 import {
   Bike,
@@ -111,14 +110,11 @@ const getStatusBadge = (status) => {
 
 export default function ManageRiders() {
   return (
-    <RoleGuard allowedRoles={['admin']}>
-      <DashboardLayout roleName="Admin">
+    <DashboardLayout roleName="Admin">
         <div className="space-y-8">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">
-                Manage Riders
-              </h1>
+              <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">Manage Riders</h1>
               <p className="mt-1 text-sm md:text-base text-gray-500">
                 Review rider applications, monitor active accounts, and manage rider status.
               </p>
@@ -199,13 +195,8 @@ export default function ManageRiders() {
 
                 <tbody className="divide-y divide-gray-100 text-sm text-gray-600">
                   {riders.map((rider) => (
-                    <tr
-                      key={rider.id}
-                      className="transition hover:bg-gray-50/80"
-                    >
-                      <td className="px-6 py-4 font-semibold text-gray-900">
-                        {rider.id}
-                      </td>
+                    <tr key={rider.id} className="transition hover:bg-gray-50/80">
+                      <td className="px-6 py-4 font-semibold text-gray-900">{rider.id}</td>
                       <td className="px-6 py-4">{rider.name}</td>
                       <td className="px-6 py-4">{rider.email}</td>
                       <td className="px-6 py-4">{rider.phone}</td>
@@ -213,7 +204,7 @@ export default function ManageRiders() {
                       <td className="px-6 py-4">
                         <span
                           className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold capitalize ${getStatusBadge(
-                            rider.status
+                            rider.status,
                           )}`}
                         >
                           {rider.status}
@@ -245,6 +236,5 @@ export default function ManageRiders() {
           </div>
         </div>
       </DashboardLayout>
-    </RoleGuard>
   );
 }

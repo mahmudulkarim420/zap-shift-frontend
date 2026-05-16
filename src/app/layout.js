@@ -1,40 +1,39 @@
-import { ClerkProvider } from "@clerk/nextjs";
-import { Geist } from "next/font/google";
 import "./globals.css";
 
+import { Geist, Geist_Mono } from "next/font/google";
+
 import LayoutClient from "./LayoutClient";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
 export const metadata = {
   title: "ZapShift – Fast & Reliable Parcel Delivery",
   description:
-    "Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal packages to business shipments — we deliver on time, every time.",
+    "Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle.",
 
-  // ✅ Favicon added
   icons: {
-    icon: [
-      { url: "/logo.png", sizes: "32x32", type: "image/png" },
-    ],
+    icon: [{ url: "/logo.png", sizes: "32x32", type: "image/png" }],
   },
 };
 
 export default function RootLayout({ children }) {
-  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
-  if (!publishableKey) {
-    console.warn("Clerk Publishable Key is missing from .env");
-  }
-
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} antialiased`}>
-        <ClerkProvider publishableKey={publishableKey}>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <SessionProvider>
           <LayoutClient>{children}</LayoutClient>
-        </ClerkProvider>
+        </SessionProvider>
       </body>
     </html>
   );

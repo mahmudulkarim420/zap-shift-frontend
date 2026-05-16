@@ -1,7 +1,14 @@
 "use client";
 
-import { AuthenticateWithRedirectCallback } from "@clerk/nextjs";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SSOCallback() {
-  return <AuthenticateWithRedirectCallback />;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/");
+  }, [router]);
+
+  return null;
 }

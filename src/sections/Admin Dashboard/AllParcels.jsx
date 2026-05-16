@@ -1,16 +1,7 @@
-'use client';
+"use client";
 
-import RoleGuard from "@/components/RoleGuard";
 import DashboardLayout from "@/components/Dashboard/DashboardLayout";
-import {
-  Package,
-  Truck,
-  CheckCircle2,
-  Clock3,
-  Search,
-  Filter,
-  Eye,
-} from "lucide-react";
+import { Package, Truck, CheckCircle2, Clock3, Search, Filter, Eye } from "lucide-react";
 
 const parcelStats = [
   {
@@ -116,14 +107,11 @@ const getStatusBadge = (status) => {
 
 export default function AllParcels() {
   return (
-    <RoleGuard allowedRoles={['admin']}>
-      <DashboardLayout roleName="Admin">
+    <DashboardLayout roleName="Admin">
         <div className="space-y-8">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">
-                All Parcels
-              </h1>
+              <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">All Parcels</h1>
               <p className="mt-1 text-sm md:text-base text-gray-500">
                 Monitor parcel activity, shipment status, and delivery progress.
               </p>
@@ -205,13 +193,8 @@ export default function AllParcels() {
 
                 <tbody className="divide-y divide-gray-100 text-sm text-gray-600">
                   {parcels.map((parcel) => (
-                    <tr
-                      key={parcel.id}
-                      className="transition hover:bg-gray-50/80"
-                    >
-                      <td className="px-6 py-4 font-semibold text-gray-900">
-                        {parcel.id}
-                      </td>
+                    <tr key={parcel.id} className="transition hover:bg-gray-50/80">
+                      <td className="px-6 py-4 font-semibold text-gray-900">{parcel.id}</td>
                       <td className="px-6 py-4">{parcel.sender}</td>
                       <td className="px-6 py-4">{parcel.receiver}</td>
                       <td className="px-6 py-4">{parcel.type}</td>
@@ -220,7 +203,7 @@ export default function AllParcels() {
                       <td className="px-6 py-4">
                         <span
                           className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold capitalize ${getStatusBadge(
-                            parcel.status
+                            parcel.status,
                           )}`}
                         >
                           {parcel.status}
@@ -240,6 +223,5 @@ export default function AllParcels() {
           </div>
         </div>
       </DashboardLayout>
-    </RoleGuard>
   );
 }

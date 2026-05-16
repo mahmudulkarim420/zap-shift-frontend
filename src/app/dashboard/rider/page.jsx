@@ -1,10 +1,11 @@
+"use client";
+import RoleGuard from "@/components/RoleGuard";
 import RiderDashboard from "@/sections/Rider Dashboard/RiderDashboard";
-import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function RiderDashboardPage() {
   return (
-    <ProtectedRoute allowedRoles={['rider']}>
+    <RoleGuard allowedRoles={["rider"]}>
       <RiderDashboard />
-    </ProtectedRoute>
+    </RoleGuard>
   );
 }

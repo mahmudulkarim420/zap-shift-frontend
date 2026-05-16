@@ -15,45 +15,16 @@ const inputClass = `h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-
                     focus:border-primary focus:ring-2 focus:ring-primary/20
                     transition-all duration-200`;
 
-import { useSignUp } from '@clerk/nextjs';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
 const Rider = () => {
   const router = useRouter();
-  const { isLoaded, signUp, setActive } = useSignUp();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
-    if (!isLoaded) return;
-    
-    try {
-      // Start Clerk sign-up
-      const result = await signUp.create({
-        emailAddress: data.email,
-        password: data.password,
-        firstName: data.name.split(' ')[0],
-        lastName: data.name.split(' ').slice(1).join(' '),
-      });
-
-      // Prepare email verification
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-
-      // Note: In a production app, you would have a second step to enter the code.
-      // And you would set the publicMetadata.role = 'rider' either via a webhook 
-      // or after the user is fully created.
-      
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        router.push('/dashboard/rider');
-      } else {
-        alert("Rider account created! Please check your email for a verification code. Further verification steps are required.");
-        console.log(result);
-      }
-    } catch (error) {
-       console.error("Rider registration error:", error.message);
-       alert(error.errors?.[0]?.message || "Failed to register as rider");
-    }
+    // Auth logic removed as per request
+    console.log("Rider application submitted:", data);
   };
 
   return (

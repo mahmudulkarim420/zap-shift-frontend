@@ -1,24 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import axios from 'axios';
+import { FaBoxOpen, FaSpinner, FaClock, FaCheckCircle } from 'react-icons/fa';
 
 const parcelTypes = [
-  { value: 'document', label: 'Document', basePrice: 50 },
-  { value: 'small-package', label: 'Small Package', basePrice: 80 },
-  { value: 'medium-package', label: 'Medium Package', basePrice: 120 },
-  { value: 'large-package', label: 'Large Package', basePrice: 180 },
+  { value: 'document',        label: 'Document' },
+  { value: 'small-package',   label: 'Small Package' },
+  { value: 'medium-package',  label: 'Medium Package' },
+  { value: 'large-package',   label: 'Large Package' },
 ];
 
 const destinations = [
-  { value: 'inside-city', label: 'Inside City', multiplier: 1.0 },
-  { value: 'outside-city', label: 'Outside City', multiplier: 1.5 },
-  { value: 'suburban', label: 'Suburban Area', multiplier: 1.8 },
-];
-
-const breakdown = [
-  { label: 'Base Delivery', key: 'base' },
-  { label: 'Weight Charge', key: 'weight' },
-  { label: 'Distance Charge', key: 'dist' },
+  { value: 'inside-city',  label: 'Inside City' },
+  { value: 'outside-city', label: 'Outside City' },
+  { value: 'suburban',     label: 'Suburban Area' },
 ];
 
 const infoCards = [
@@ -28,37 +24,43 @@ const infoCards = [
 ];
 
 const Pricing = () => {
-  const [parcelType, setParcelType] = useState('');
+  const [parcelType, setParcelType]   = useState('');
   const [destination, setDestination] = useState('');
-  const [weight, setWeight] = useState('');
-  const [result, setResult] = useState(null);
-  const [calculated, setCalculated] = useState(false);
+  const [weight, setWeight]           = useState('');
+  const [loading, setLoading]         = useState(false);
+  const [error, setError]             = useState(null);
+  const [pricingResult, setPricingResult] = useState(null);
 
-  const handleCalculate = () => {
-    if (!parcelType || !destination || !weight) return;
+  const isReady = parcelType && destination && weight && !loading;
 
-    const pt = parcelTypes.find(p => p.value === parcelType);
-    const dest = destinations.find(d => d.value === destination);
-    const kg = parseFloat(weight) || 0;
+  const handleCalculate = async () => {
+    if (!isReady) return;
+    setLoading(true);
+    setError(null);
+    setPricingResult(null);
 
-    const base = pt.basePrice;
-    const wCharge = Math.ceil(kg) * 10;
-    const dCharge = Math.round((base * (dest.multiplier - 1)));
-    const total = base + wCharge + dCharge;
-
-    setResult({ base, weight: wCharge, dist: dCharge, total });
-    setCalculated(true);
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/infra/pricing/calculate`,
+        { parcelType, destination, weight: parseFloat(weight) }
+      );
+      if (response.data.success) {
+        setPricingResult(response.data.data);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Calculation failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
     setParcelType('');
     setDestination('');
     setWeight('');
-    setResult(null);
-    setCalculated(false);
+    setPricingResult(null);
+    setError(null);
   };
-
-  const isReady = parcelType && destination && weight;
 
   return (
     <main className="min-h-screen py-10 sm:py-14">
@@ -67,7 +69,6 @@ const Pricing = () => {
         {/* ── Header Band ── */}
         <div className="bg-secondary px-6 sm:px-10 lg:px-14 py-10 sm:py-12 lg:py-14">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-
             <div className="max-w-xl">
               <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-2">
                 Transparent Pricing
@@ -122,7 +123,7 @@ const Pricing = () => {
                   </label>
                   <select
                     value={parcelType}
-                    onChange={e => { setParcelType(e.target.value); setCalculated(false); }}
+                    onChange={e => { setParcelType(e.target.value); setPricingResult(null); setError(null); }}
                     className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4
                                text-sm text-gray-700 outline-none appearance-none cursor-pointer
                                focus:border-primary focus:ring-2 focus:ring-primary/20
@@ -142,7 +143,7 @@ const Pricing = () => {
                   </label>
                   <select
                     value={destination}
-                    onChange={e => { setDestination(e.target.value); setCalculated(false); }}
+                    onChange={e => { setDestination(e.target.value); setPricingResult(null); setError(null); }}
                     className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4
                                text-sm text-gray-700 outline-none appearance-none cursor-pointer
                                focus:border-primary focus:ring-2 focus:ring-primary/20
@@ -166,13 +167,20 @@ const Pricing = () => {
                     step="0.1"
                     placeholder="e.g. 1.5"
                     value={weight}
-                    onChange={e => { setWeight(e.target.value); setCalculated(false); }}
+                    onChange={e => { setWeight(e.target.value); setPricingResult(null); setError(null); }}
                     className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 px-4
                                text-sm text-gray-700 placeholder-gray-400 outline-none
                                focus:border-primary focus:ring-2 focus:ring-primary/20
                                transition-all duration-200"
                   />
                 </div>
+
+                {/* Error message */}
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                    <p className="text-red-600 font-bold text-sm">{error}</p>
+                  </div>
+                )}
 
                 {/* Buttons */}
                 <div className="flex gap-3 pt-1">
@@ -188,13 +196,17 @@ const Pricing = () => {
                     onClick={handleCalculate}
                     disabled={!isReady}
                     className={`flex-1 py-3 rounded-full text-sm font-semibold shadow
-                                active:scale-95 transition-all duration-200
+                                active:scale-95 transition-all duration-200 flex items-center justify-center gap-2
                                 ${isReady
                         ? 'bg-primary text-black hover:brightness-105 cursor-pointer'
                         : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       }`}
                   >
-                    Calculate Cost
+                    {loading ? (
+                      <><FaSpinner className="animate-spin" /> Calculating…</>
+                    ) : (
+                      'Calculate Cost'
+                    )}
                   </button>
                 </div>
               </div>
@@ -202,13 +214,31 @@ const Pricing = () => {
 
             {/* ── Result Panel ── */}
             <div className={`rounded-2xl border transition-all duration-300
-                            ${calculated
+                            ${pricingResult
                 ? 'bg-primary/5 border-primary/20'
                 : 'bg-gray-50 border-gray-100'
               } p-6 sm:p-8`}>
 
-              {!calculated ? (
-                /* Empty state */
+              {/* Loading skeleton */}
+              {loading && (
+                <div className="space-y-4 animate-pulse py-4">
+                  <div className="h-4 bg-gray-200 rounded-full w-1/3 mb-6" />
+                  <div className="h-16 bg-gray-200 rounded-2xl w-2/3" />
+                  <div className="h-3 bg-gray-100 rounded-full w-1/2 mb-8" />
+                  <div className="space-y-3 mt-8">
+                    {[1, 2, 3].map(i => (
+                      <div key={i} className="flex justify-between bg-white rounded-xl px-4 py-3 border border-gray-100">
+                        <div className="h-3 bg-gray-100 rounded-full w-1/3" />
+                        <div className="h-3 bg-gray-200 rounded-full w-1/4" />
+                      </div>
+                    ))}
+                    <div className="bg-gray-200 rounded-xl px-4 py-3 h-11" />
+                  </div>
+                </div>
+              )}
+
+              {/* Empty placeholder */}
+              {!loading && !pricingResult && (
                 <div className="flex flex-col items-center justify-center text-center py-10 sm:py-14">
                   <div className="text-5xl mb-4">📦</div>
                   <p className="text-secondary font-semibold text-base sm:text-lg mb-1">
@@ -219,42 +249,55 @@ const Pricing = () => {
                     <span className="text-secondary font-medium"> Calculate Cost</span>.
                   </p>
                 </div>
-              ) : (
-                /* Result */
+              )}
+
+              {/* Result breakdown */}
+              {!loading && pricingResult && (
                 <div>
                   <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-1">
                     Estimated Cost
                   </p>
                   <p className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-secondary leading-none mb-2">
-                    ৳{result.total}
+                    ৳{pricingResult.totalCost}
                   </p>
                   <p className="text-gray-400 text-sm mb-8">
                     All charges included · No hidden fees
                   </p>
 
-                  {/* Breakdown */}
+                  {/* Breakdown rows */}
                   <div className="space-y-3">
-                    {breakdown.map(item => (
+                    {[
+                      { label: 'Base Fare', value: pricingResult.baseFare },
+                      { label: 'Weight Charge', value: pricingResult.weightCharge },
+                      { label: 'Destination Surcharge', value: pricingResult.destinationCharge },
+                    ].map(item => (
                       <div
-                        key={item.key}
+                        key={item.label}
                         className="flex items-center justify-between bg-white rounded-xl
                                    px-4 py-3 border border-gray-100"
                       >
                         <span className="text-sm text-gray-500">{item.label}</span>
-                        <span className="text-sm font-bold text-secondary">
-                          ৳{result[item.key]}
-                        </span>
+                        <span className="text-sm font-bold text-secondary">৳{item.value}</span>
                       </div>
                     ))}
 
                     {/* Total row */}
-                    <div className="flex items-center justify-between bg-secondary rounded-xl
-                                    px-4 py-3 mt-1">
-                      <span className="text-sm font-semibold text-white">Total</span>
+                    <div className="flex items-center justify-between bg-secondary rounded-xl px-4 py-3 mt-1">
+                      <span className="text-sm font-semibold text-white">Total Payable</span>
                       <span className="text-base font-extrabold text-primary">
-                        ৳{result.total}
+                        ৳{pricingResult.totalCost}
                       </span>
                     </div>
+                  </div>
+
+                  {/* Delivery window */}
+                  <div className="flex items-center gap-3 mt-6 bg-white rounded-xl px-4 py-3 border border-gray-100">
+                    <FaClock className="text-primary shrink-0" />
+                    <div>
+                      <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Estimated Delivery</p>
+                      <p className="text-sm font-extrabold text-secondary">{pricingResult.estimatedDays}</p>
+                    </div>
+                    <FaCheckCircle className="text-green-500 ml-auto shrink-0" />
                   </div>
 
                   <p className="text-xs text-gray-400 mt-5 leading-relaxed">

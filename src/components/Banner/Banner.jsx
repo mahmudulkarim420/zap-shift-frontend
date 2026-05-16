@@ -1,32 +1,35 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState, useCallback } from 'react';
-import bannerImg1 from '@/app/assets/banner/banner1.png';
-import bannerImg2 from '@/app/assets/banner/banner2.png';
-import bannerImg3 from '@/app/assets/banner/banner3.png';
-import { FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import Link from 'next/link';
-import Image from 'next/image';
+import React, { useEffect, useState, useCallback } from "react";
+import bannerImg1 from "@/app/assets/banner/banner1.png";
+import bannerImg2 from "@/app/assets/banner/banner2.png";
+import bannerImg3 from "@/app/assets/banner/banner3.png";
+import { FaArrowRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import Link from "next/link";
+import Image from "next/image";
 
 const slides = [
-  { img: bannerImg1, alt: 'Banner 1' },
-  { img: bannerImg2, alt: 'Banner 2' },
-  { img: bannerImg3, alt: 'Banner 3' },
+  { img: bannerImg1, alt: "Banner 1" },
+  { img: bannerImg2, alt: "Banner 2" },
+  { img: bannerImg3, alt: "Banner 3" },
 ];
 
 const Banner = () => {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
 
-  const goTo = useCallback((index) => {
-    if (animating) return;
-    setAnimating(true);
-    setCurrent((index + slides.length) % slides.length);
+  const goTo = useCallback(
+    (index) => {
+      if (animating) return;
+      setAnimating(true);
+      setCurrent((index + slides.length) % slides.length);
 
-    setTimeout(() => {
-      setAnimating(false);
-    }, 500);
-  }, [animating]);
+      setTimeout(() => {
+        setAnimating(false);
+      }, 500);
+    },
+    [animating],
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -43,8 +46,9 @@ const Banner = () => {
         {slides.map((slide, i) => (
           <div
             key={i}
-            className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${i === current ? 'opacity-100 z-10' : 'opacity-0 z-0'
-              }`}
+            className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+              i === current ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
           >
             <Image
               src={slide.img}
@@ -69,7 +73,7 @@ const Banner = () => {
               </button>
 
               <Link
-                href="/register"
+                href="/sign-up"
                 className="rounded-full bg-secondary px-4 py-2.5 text-xs font-semibold text-primary shadow-lg transition-all duration-200 hover:brightness-105 active:scale-95 sm:px-5 sm:py-3 sm:text-sm md:px-6 md:text-base"
               >
                 Join Now
@@ -114,10 +118,11 @@ const Banner = () => {
               key={i}
               onClick={() => goTo(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`rounded-full transition-all duration-300 ${i === current
-                ? 'h-2 w-6 bg-primary sm:w-7 md:w-8'
-                : 'h-2 w-2 bg-white/60 hover:bg-white'
-                }`}
+              className={`rounded-full transition-all duration-300 ${
+                i === current
+                  ? "h-2 w-6 bg-primary sm:w-7 md:w-8"
+                  : "h-2 w-2 bg-white/60 hover:bg-white"
+              }`}
             />
           ))}
         </div>

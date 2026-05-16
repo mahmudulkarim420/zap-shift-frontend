@@ -1,16 +1,8 @@
-'use client';
+"use client";
 
-import RoleGuard from "@/components/RoleGuard";
+
 import DashboardLayout from "@/components/Dashboard/DashboardLayout";
-import {
-  Shield,
-  User,
-  Bike,
-  Crown,
-  Search,
-  Filter,
-  RefreshCcw,
-} from "lucide-react";
+import { Shield, User, Bike, Crown, Search, Filter, RefreshCcw } from "lucide-react";
 
 const users = [
   {
@@ -63,15 +55,12 @@ const getRoleIcon = (role) => {
 
 export default function ManageRole() {
   return (
-    <RoleGuard allowedRoles={['admin']}>
-      <DashboardLayout roleName="Admin">
+    <DashboardLayout roleName="Admin">
         <div className="space-y-8">
           {/* Header */}
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">
-                Manage Roles
-              </h1>
+              <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900">Manage Roles</h1>
               <p className="mt-1 text-sm md:text-base text-gray-500">
                 Control user permissions and assign roles across the platform.
               </p>
@@ -87,12 +76,8 @@ export default function ManageRole() {
             <div className="p-6 bg-blue-50 border border-blue-100 rounded-2xl shadow-sm">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-sm font-semibold text-blue-700 uppercase">
-                    Users
-                  </p>
-                  <h3 className="text-3xl font-extrabold text-blue-950 mt-2">
-                    124
-                  </h3>
+                  <p className="text-sm font-semibold text-blue-700 uppercase">Users</p>
+                  <h3 className="text-3xl font-extrabold text-blue-950 mt-2">124</h3>
                 </div>
                 <div className="bg-blue-100 p-3 rounded-xl text-blue-700">
                   <User className="w-5 h-5" />
@@ -103,12 +88,8 @@ export default function ManageRole() {
             <div className="p-6 bg-orange-50 border border-orange-100 rounded-2xl shadow-sm">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-sm font-semibold text-orange-700 uppercase">
-                    Riders
-                  </p>
-                  <h3 className="text-3xl font-extrabold text-orange-950 mt-2">
-                    32
-                  </h3>
+                  <p className="text-sm font-semibold text-orange-700 uppercase">Riders</p>
+                  <h3 className="text-3xl font-extrabold text-orange-950 mt-2">32</h3>
                 </div>
                 <div className="bg-orange-100 p-3 rounded-xl text-orange-700">
                   <Bike className="w-5 h-5" />
@@ -119,12 +100,8 @@ export default function ManageRole() {
             <div className="p-6 bg-violet-50 border border-violet-100 rounded-2xl shadow-sm">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-sm font-semibold text-violet-700 uppercase">
-                    Admins
-                  </p>
-                  <h3 className="text-3xl font-extrabold text-violet-950 mt-2">
-                    3
-                  </h3>
+                  <p className="text-sm font-semibold text-violet-700 uppercase">Admins</p>
+                  <h3 className="text-3xl font-extrabold text-violet-950 mt-2">3</h3>
                 </div>
                 <div className="bg-violet-100 p-3 rounded-xl text-violet-700">
                   <Shield className="w-5 h-5" />
@@ -137,12 +114,8 @@ export default function ManageRole() {
           <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">
-                  User Roles
-                </h2>
-                <p className="text-sm text-gray-500 mt-1">
-                  Update and manage roles for all users.
-                </p>
+                <h2 className="text-xl font-bold text-gray-900">User Roles</h2>
+                <p className="text-sm text-gray-500 mt-1">Update and manage roles for all users.</p>
               </div>
 
               <div className="flex gap-3">
@@ -176,17 +149,13 @@ export default function ManageRole() {
                 <tbody className="divide-y text-sm">
                   {users.map((user) => (
                     <tr key={user.id} className="hover:bg-gray-50 transition">
-                      <td className="px-6 py-4 font-semibold text-gray-900">
-                        {user.name}
-                      </td>
-                      <td className="px-6 py-4 text-gray-600">
-                        {user.email}
-                      </td>
+                      <td className="px-6 py-4 font-semibold text-gray-900">{user.name}</td>
+                      <td className="px-6 py-4 text-gray-600">{user.email}</td>
 
                       <td className="px-6 py-4">
                         <span
                           className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold capitalize ${getRoleBadge(
-                            user.role
+                            user.role,
                           )}`}
                         >
                           {getRoleIcon(user.role)}
@@ -209,6 +178,5 @@ export default function ManageRole() {
           </div>
         </div>
       </DashboardLayout>
-    </RoleGuard>
   );
 }
