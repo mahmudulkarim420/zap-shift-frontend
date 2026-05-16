@@ -7,6 +7,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { normalizeRole } from '@/utils/roleUtils';
 import { useSession, signOut } from 'next-auth/react';
 import { 
+  Briefcase,
   LayoutDashboard, 
   Package, 
   Users, 
@@ -165,14 +166,20 @@ export default function DashboardLayout({ children }) {
               <p className={`px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] mb-3 transition-opacity duration-200 ${collapsed && !mobileOpen ? 'opacity-0' : 'opacity-100'}`}>
                 Delivery Ops
               </p>
-              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/deliveries" icon={<Truck className="w-5 h-5" />} active={pathname === '/dashboard/rider/deliveries'}>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/available-deliveries" icon={<Truck className="w-5 h-5" />} active={pathname === '/dashboard/rider/available-deliveries'}>
                 Available Deliveries
+              </NavLink>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/my-tasks" icon={<Layers className="w-5 h-5" />} active={pathname === '/dashboard/rider/my-tasks'}>
+                My Active Tasks
               </NavLink>
               <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/earnings" icon={<DollarSign className="w-5 h-5" />} active={pathname === '/dashboard/rider/earnings'}>
                 My Earnings
               </NavLink>
+              <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/work-profile" icon={<Briefcase className="w-5 h-5" />} active={pathname === '/dashboard/rider/work-profile'}>
+                Work Portfolio
+              </NavLink>
               <NavLink collapsed={collapsed && !mobileOpen} href="/dashboard/rider/profile" icon={<User className="w-5 h-5" />} active={pathname === '/dashboard/rider/profile'}>
-                Work Profile
+                Personal Profile
               </NavLink>
             </div>
           )}
