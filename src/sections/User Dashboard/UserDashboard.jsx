@@ -5,8 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import DashboardLayout from "@/components/Dashboard/DashboardLayout";
 import { useSession } from "next-auth/react";
-import { FaSpinner } from "react-icons/fa";
-
+import { FaSpinner, FaBox, FaTruck, FaCheckCircle, FaHandSparkles, FaEnvelopeOpenText, FaSearchLocation, FaInbox } from "react-icons/fa";
 const STATUS_CONFIG = {
   pending:         { label: "Pending",          bg: "bg-amber-100",   text: "text-amber-800"   },
   accepted:        { label: "Accepted",          bg: "bg-blue-100",    text: "text-blue-800"    },
@@ -43,9 +42,9 @@ export default function UserDashboard() {
   }, [session]);
 
   const stats = [
-    { label: "Total Booked",     value: parcels.length,                                             icon: "📦", color: "purple" },
-    { label: "Active Deliveries",value: parcels.filter(p => !["delivered","cancelled","returned"].includes(p.status)).length, icon: "🚚", color: "blue"   },
-    { label: "Delivered",        value: parcels.filter(p => p.status === "delivered").length,        icon: "✅", color: "green"  },
+    { label: "Total Booked",     value: parcels.length,                                             icon: <FaBox />, color: "purple" },
+    { label: "Active Deliveries",value: parcels.filter(p => !["delivered","cancelled","returned"].includes(p.status)).length, icon: <FaTruck />, color: "blue"   },
+    { label: "Delivered",        value: parcels.filter(p => p.status === "delivered").length,        icon: <FaCheckCircle />, color: "green"  },
   ];
 
   return (
@@ -56,8 +55,8 @@ export default function UserDashboard() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <p className="text-xs font-black uppercase tracking-widest text-primary mb-1">My Dashboard</p>
-            <h1 className="text-2xl font-extrabold text-secondary">
-              Welcome back, {user?.name?.split(" ")[0] || "there"} 👋
+            <h1 className="text-2xl font-extrabold text-secondary flex items-center gap-2">
+              Welcome back, {user?.name?.split(" ")[0] || "there"} <FaHandSparkles className="text-amber-500" />
             </h1>
             <p className="text-sm text-gray-400 mt-1">Track your parcels and manage shipments from here.</p>
           </div>
@@ -93,7 +92,7 @@ export default function UserDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Link href="/dashboard/book-parcel"
             className="flex items-center gap-5 p-6 bg-secondary rounded-2xl shadow-lg hover:shadow-xl transition group">
-            <span className="text-3xl">📬</span>
+            <span className="text-3xl text-white/80"><FaEnvelopeOpenText /></span>
             <div>
               <p className="text-primary font-extrabold uppercase tracking-widest text-xs mb-0.5">Quick Action</p>
               <p className="text-white font-bold text-lg">Book a Parcel</p>
@@ -103,7 +102,7 @@ export default function UserDashboard() {
           </Link>
           <Link href="/dashboard/my-orders"
             className="flex items-center gap-5 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-primary/30 hover:shadow-md transition group">
-            <span className="text-3xl">🔍</span>
+            <span className="text-3xl text-secondary"><FaSearchLocation /></span>
             <div>
               <p className="text-primary font-extrabold uppercase tracking-widest text-xs mb-0.5">Track</p>
               <p className="text-secondary font-bold text-lg">My Orders</p>
@@ -129,7 +128,7 @@ export default function UserDashboard() {
             </div>
           ) : parcels.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <span className="text-5xl mb-3">📭</span>
+              <span className="text-5xl mb-3 text-gray-300"><FaInbox /></span>
               <p className="text-secondary font-bold">No shipments yet</p>
               <p className="text-gray-400 text-sm mt-1">Book your first parcel to get started.</p>
               <Link href="/dashboard/book-parcel"

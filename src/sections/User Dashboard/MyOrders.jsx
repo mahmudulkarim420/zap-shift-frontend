@@ -5,7 +5,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import DashboardLayout from "@/components/Dashboard/DashboardLayout";
-import { FaSearch, FaFilter, FaSpinner, FaBoxOpen, FaEye, FaCreditCard, FaCheckCircle, FaTimes } from "react-icons/fa";
+import { FaSearch, FaFilter, FaSpinner, FaBoxOpen, FaEye, FaCreditCard, FaCheckCircle, FaTimes, FaLightbulb } from "react-icons/fa";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { loadStripe } from "@stripe/stripe-js";
@@ -197,7 +197,7 @@ export default function MyOrders() {
             </div>
           ) : filteredParcels.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
-              <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4 text-4xl">📦</div>
+              <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4 text-4xl text-gray-300"><FaBoxOpen /></div>
               <h3 className="text-xl font-extrabold text-secondary mb-1">No orders found</h3>
               <p className="text-gray-400 text-sm max-w-xs mx-auto">
                 {searchTerm || statusFilter !== "all" 
@@ -366,7 +366,7 @@ export default function MyOrders() {
         {/* Footer info */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-secondary p-6 rounded-3xl">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">💡</span>
+            <span className="text-2xl text-yellow-400"><FaLightbulb /></span>
             <p className="text-white/60 text-xs font-medium">
               Want to see exactly where your parcel is? Click on <span className="text-primary font-bold">View details</span> to see the full tracking history.
             </p>

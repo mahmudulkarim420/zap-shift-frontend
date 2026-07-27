@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaSearch, FaSpinner, FaCheckCircle, FaMapMarkerAlt, FaClock, FaBox } from 'react-icons/fa';
+import { FaSearch, FaSpinner, FaCheckCircle, FaMapMarkerAlt, FaClock, FaBox, FaShuttleVan, FaTruck, FaStar } from 'react-icons/fa';
 
 const STATUS_MAP = {
-  pending:          { label: "Pending",          icon: "🕒", color: "text-amber-500" },
-  accepted:         { label: "Accepted",         icon: "✅", color: "text-blue-500" },
-  in_transit:       { label: "In Transit",       icon: "🚐", color: "text-purple-500" },
-  out_for_delivery: { label: "Out for Delivery", icon: "🚚", color: "text-orange-500" },
-  delivered:        { label: "Delivered",        icon: "✨", color: "text-green-500" },
+  pending:          { label: "Pending",          icon: <FaClock />, color: "text-amber-500" },
+  accepted:         { label: "Accepted",         icon: <FaCheckCircle />, color: "text-blue-500" },
+  in_transit:       { label: "In Transit",       icon: <FaShuttleVan />, color: "text-purple-500" },
+  out_for_delivery: { label: "Out for Delivery", icon: <FaTruck />, color: "text-orange-500" },
+  delivered:        { label: "Delivered",        icon: <FaStar />, color: "text-green-500" },
 };
 
 export default function TrackOrder({ initialId = "" }) {

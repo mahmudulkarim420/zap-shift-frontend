@@ -7,7 +7,7 @@ import axios from "axios";
 import DashboardLayout from "@/components/Dashboard/DashboardLayout";
 import {
   FaBoxOpen, FaUser, FaPhone, FaMapMarkerAlt,
-  FaWeightHanging, FaCheckCircle, FaSpinner, FaTimes
+  FaWeightHanging, FaCheckCircle, FaSpinner, FaTimes, FaMoneyBillWave
 } from "react-icons/fa";
 
 const PARCEL_TYPES = [
@@ -237,7 +237,7 @@ export default function BookParcel() {
             <div className={`rounded-2xl border p-6 transition-all duration-300 ${estimate ? "bg-primary/5 border-primary/20" : "bg-gray-50 border-gray-100"}`}>
               {!estimate ? (
                 <div className="flex flex-col items-center text-center py-8">
-                  <span className="text-4xl mb-3">💰</span>
+                  <span className="text-4xl mb-3 text-green-500"><FaMoneyBillWave /></span>
                   <p className="text-secondary font-bold text-sm">Live cost estimate</p>
                   <p className="text-gray-400 text-xs mt-1">Select type, zone, and weight to see pricing.</p>
                 </div>
