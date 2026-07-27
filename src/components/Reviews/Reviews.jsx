@@ -15,7 +15,7 @@ import {
   Navigation,
 } from 'swiper/modules';
 import ReviewCard from './ReviewCard';
-import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
+import { ArrowRight, ArrowLeft, MessageSquareQuote } from 'lucide-react';
 import customerImg from '@/app/assets/customer-top.png';
 
 const Reviews = () => {
@@ -40,27 +40,26 @@ const Reviews = () => {
     fetchReviews();
   }, []);
 
-  // Loading skeleton matching card shape
   const SkeletonReview = () => (
-    <div className="bg-gradient-to-b from-white to-[#f4faf6] border border-border/70 rounded-3xl p-10 h-72 animate-pulse shadow-[0_18px_40px_-28px_rgba(8,60,64,0.35)]">
-      <div className="w-8 h-8 bg-primary/15 rounded-lg mb-4" />
-      <div className="h-4 bg-slate-100 rounded-full w-full mb-2" />
-      <div className="h-4 bg-slate-100 rounded-full w-4/5 mb-2" />
-      <div className="h-4 bg-slate-100 rounded-full w-2/3 mb-6" />
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-slate-100" />
+    <div className="bg-white border border-[#E5E7EB] rounded-3xl p-7 h-[300px] animate-pulse shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+      <div className="w-9 h-9 bg-[#F3F4F6] rounded-lg mb-5" />
+      <div className="h-4 bg-[#F3F4F6] rounded-full w-full mb-2" />
+      <div className="h-4 bg-[#F3F4F6] rounded-full w-4/5 mb-2" />
+      <div className="h-4 bg-[#F3F4F6] rounded-full w-2/3 mb-6" />
+      <div className="flex items-center gap-3 mt-auto">
+        <div className="w-11 h-11 rounded-full bg-[#F3F4F6]" />
         <div className="space-y-2">
-          <div className="h-3 bg-slate-100 rounded-full w-24" />
-          <div className="h-2 bg-slate-100 rounded-full w-16" />
+          <div className="h-3 bg-[#F3F4F6] rounded-full w-24" />
+          <div className="h-2.5 bg-[#F3F4F6] rounded-full w-16" />
         </div>
       </div>
     </div>
   );
 
   return (
-    <section className="relative w-full overflow-hidden rounded-[32px] border border-border/70 bg-white/80 px-4 py-12 shadow-[0_24px_80px_-48px_rgba(8,60,64,0.45)] backdrop-blur-sm sm:px-6 sm:py-16 lg:px-8">
-      <div className="pointer-events-none absolute -left-20 top-0 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-0 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
+    <section className="relative w-full overflow-hidden rounded-[32px] border border-[#E5E7EB] bg-white px-4 py-12 shadow-[0_1px_3px_rgba(0,0,0,0.06)] sm:px-6 sm:py-16 lg:px-8">
+      <div className="pointer-events-none absolute -left-20 top-0 h-56 w-56 rounded-full bg-primary/4 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-56 w-56 rounded-full bg-accent/4 blur-3xl" />
 
       {/* Section Header */}
       <div className="relative text-center mb-10 sm:mb-12">
@@ -74,13 +73,13 @@ const Reviews = () => {
           />
         </div>
 
-        <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-2">
+        <p className="text-xs sm:text-sm font-semibold tracking-wider text-primary mb-2">
           Customer Reviews
         </p>
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-secondary mb-4">
-          What Our Customers Are Saying
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1F2937] mb-3 leading-tight">
+          What our customers are saying
         </h2>
-        <p className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+        <p className="text-[#6B7280] text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
           Thousands of merchants and customers trust ZapShift for fast,
           safe, and reliable delivery across Bangladesh — every single day.
         </p>
@@ -142,33 +141,34 @@ const Reviews = () => {
           <div className="reviews-pagination flex justify-center gap-2 mt-2" />
         </div>
       ) : (
-        <div className="text-center py-20 bg-gradient-to-b from-white to-[#f5fbf6] rounded-3xl border-2 border-dashed border-border">
-           <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">No reviews found yet</p>
+        <div className="text-center py-16 bg-[#F8FAFC] rounded-2xl border border-dashed border-[#E5E7EB]">
+          <MessageSquareQuote className="w-8 h-8 text-[#D1D5DB] mx-auto mb-3" />
+          <p className="text-[#9CA3AF] font-medium text-sm">No reviews yet</p>
         </div>
       )}
 
       {/* Navigation Buttons */}
-      <div className="flex items-center justify-center gap-4 mt-6">
+      <div className="flex items-center justify-center gap-3 mt-6">
         <button
           ref={prevRef}
           aria-label="Previous review"
-          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-border bg-white
-                     text-secondary flex items-center justify-center shadow-sm
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-[#E5E7EB] bg-white
+                     text-[#1F2937] flex items-center justify-center
                      hover:border-primary hover:text-primary hover:bg-primary/5
                      active:scale-95 transition-all duration-200"
         >
-          <FaArrowLeft className="text-sm" />
+          <ArrowLeft className="w-4 h-4" />
         </button>
 
         <button
           ref={nextRef}
           aria-label="Next review"
-          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary text-secondary
-                     flex items-center justify-center shadow-[0_14px_30px_rgba(184,244,93,0.28)]
-                     hover:brightness-105 active:scale-95
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary text-white
+                     flex items-center justify-center shadow-[0_4px_12px_rgba(0,183,149,0.18)]
+                     hover:bg-primary-hover active:scale-95
                      transition-all duration-200"
         >
-          <FaArrowRight className="text-sm" />
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </section>

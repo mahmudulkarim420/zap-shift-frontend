@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from "react";
+import { BookOpen, Target, Trophy, Users } from 'lucide-react';
 
 const tabs = [
-  { key: "story", label: "Our Story", icon: "📖" },
-  { key: "mission", label: "Mission", icon: "🎯" },
-  { key: "success", label: "Success", icon: "🏆" },
-  { key: "team", label: "Team", icon: "🤝" },
+  { key: "story", label: "Our Story", icon: BookOpen },
+  { key: "mission", label: "Mission", icon: Target },
+  { key: "success", label: "Success", icon: Trophy },
+  { key: "team", label: "Team", icon: Users },
 ];
 
 const content = {
@@ -51,6 +52,7 @@ const AboutUs = () => {
   const [active, setActive] = useState("story");
   const current = content[active];
   const activeTab = tabs.find((tab) => tab.key === active);
+  const TabIcon = activeTab?.icon;
 
   return (
     <section className="py-10 sm:py-14 space-y-6 sm:space-y-8">
@@ -102,6 +104,7 @@ const AboutUs = () => {
           <div className="flex gap-2 overflow-x-auto py-4 scrollbar-hide">
             {tabs.map((tab) => {
               const isActive = active === tab.key;
+              const Icon = tab.icon;
 
               return (
                 <button
@@ -112,7 +115,7 @@ const AboutUs = () => {
                     : "border-gray-200 bg-white text-gray-500 hover:border-primary/30 hover:bg-primary/5 hover:text-secondary"
                     }`}
                 >
-                  <span className="text-base sm:text-lg">{tab.icon}</span>
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                   {tab.label}
                 </button>
               );
@@ -127,7 +130,7 @@ const AboutUs = () => {
             <div className="max-w-3xl">
               <div className="mb-5 flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-2xl">
-                  {activeTab?.icon}
+                  {TabIcon && <TabIcon className="w-6 h-6 text-primary" />}
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
@@ -155,7 +158,7 @@ const AboutUs = () => {
             <div className="w-full">
               <div className="sticky top-24 overflow-hidden rounded-[24px] border border-primary/15 bg-gradient-to-br from-primary/10 via-white to-secondary/5 p-6 shadow-sm sm:p-7">
                 <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/15 text-3xl">
-                  {activeTab?.icon}
+                  {TabIcon && <TabIcon className="w-7 h-7 text-primary" />}
                 </div>
 
                 <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">

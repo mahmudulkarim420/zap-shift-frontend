@@ -1,14 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4faf6;
-  --foreground: #0f1f21;
-  --surface: #ffffff;
-  --surface-soft: #edf5ef;
-  --border: #d7e5de;
-  --primary: #b8f45d;
-  --secondary: #083c40;
-  --accent: #ff8a4c;
+  --background: #FFFFFF;
+  --foreground: #1F2937;
+  --surface: #FFFFFF;
+  --surface-soft: #F8FAFC;
+  --border: #E5E7EB;
+  --primary: #00B795;
+  --primary-hover: #009C80;
+  --secondary: #1F2937;
+  --accent: #0EA5E9;
+  --text-heading: #1F2937;
+  --text-body: #6B7280;
 }
 
 @theme inline {
@@ -17,11 +20,14 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-surface: var(--surface);
   --color-surface-soft: var(--surface-soft);
   --color-border: var(--border);
+  --color-heading: var(--text-heading);
+  --color-body: var(--text-body);
 }
 
 html {
@@ -30,14 +36,13 @@ html {
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(184, 244, 93, 0.2), transparent 32%),
-    radial-gradient(circle at top right, rgba(255, 138, 76, 0.14), transparent 26%),
-    linear-gradient(180deg, #f8fcf8 0%, #edf5ef 48%, #f4faf6 100%);
+  background: #FFFFFF;
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   position: relative;
   isolation: isolate;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body::before {
@@ -47,12 +52,25 @@ body::before {
   pointer-events: none;
   z-index: -1;
   background:
-    radial-gradient(circle at 18% 12%, rgba(8, 60, 64, 0.06), transparent 18%),
-    radial-gradient(circle at 82% 18%, rgba(255, 138, 76, 0.08), transparent 16%),
-    radial-gradient(circle at 50% 82%, rgba(184, 244, 93, 0.08), transparent 20%);
+    radial-gradient(circle at 18% 12%, rgba(0, 183, 149, 0.04), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(14, 165, 233, 0.03), transparent 20%),
+    radial-gradient(circle at 50% 82%, rgba(0, 183, 149, 0.03), transparent 24%);
 }
 
 ::selection {
   background: var(--primary);
-  color: var(--secondary);
+  color: #FFFFFF;
+}
+
+/* Focus ring for accessibility */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Standardised button transitions */
+button,
+a {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

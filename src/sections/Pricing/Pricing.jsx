@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import { FaBoxOpen, FaSpinner, FaClock, FaCheckCircle } from 'react-icons/fa';
+import { Loader2, Clock, CheckCircle, Package } from 'lucide-react';
 
 const parcelTypes = [
   { value: 'document',        label: 'Document' },
@@ -203,7 +203,7 @@ const Pricing = () => {
                       }`}
                   >
                     {loading ? (
-                      <><FaSpinner className="animate-spin" /> Calculating…</>
+                      <><Loader2 className="animate-spin w-4 h-4" /> Calculating…</>
                     ) : (
                       'Calculate Cost'
                     )}
@@ -240,7 +240,9 @@ const Pricing = () => {
               {/* Empty placeholder */}
               {!loading && !pricingResult && (
                 <div className="flex flex-col items-center justify-center text-center py-10 sm:py-14">
-                  <div className="text-5xl mb-4">📦</div>
+                  <div className="text-gray-300 mb-4 flex justify-center">
+                    <Package className="w-16 h-16" strokeWidth={1} />
+                  </div>
                   <p className="text-secondary font-semibold text-base sm:text-lg mb-1">
                     Your estimate will appear here
                   </p>
@@ -292,12 +294,12 @@ const Pricing = () => {
 
                   {/* Delivery window */}
                   <div className="flex items-center gap-3 mt-6 bg-white rounded-xl px-4 py-3 border border-gray-100">
-                    <FaClock className="text-primary shrink-0" />
+                    <Clock className="w-5 h-5 text-primary shrink-0" />
                     <div>
                       <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Estimated Delivery</p>
                       <p className="text-sm font-extrabold text-secondary">{pricingResult.estimatedDays}</p>
                     </div>
-                    <FaCheckCircle className="text-green-500 ml-auto shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-500 ml-auto shrink-0" />
                   </div>
 
                   <p className="text-xs text-gray-400 mt-5 leading-relaxed">
