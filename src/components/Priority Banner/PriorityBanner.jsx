@@ -4,10 +4,11 @@ import topImg from '@/app/assets/be-a-merchant-bg.png';
 
 const PriorityBanner = () => {
   return (
-    <section className="relative rounded-3xl overflow-hidden">
+    <section className="relative overflow-hidden rounded-[34px] border border-white/10 shadow-[0_30px_90px_-35px_rgba(8,60,64,0.9)]">
 
       {/* Background */}
-      <div className="absolute inset-0 bg-[#033C3F]" />
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,#051f22_0%,#0a4448_52%,#05181a_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(184,244,93,0.16),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(255,138,76,0.12),_transparent_22%)]" />
 
       {/* Top decorative image overlay */}
       <div className="absolute top-0 left-0 w-full h-40 sm:h-52 lg:h-64 pointer-events-none z-0">
@@ -19,7 +20,7 @@ const PriorityBanner = () => {
           aria-hidden="true"
         />
         {/* Fade out bottom edge of overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#033C3F]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#051f22]" />
       </div>
 
       {/* Content */}
@@ -59,7 +60,7 @@ const PriorityBanner = () => {
                 <p className="text-xl sm:text-2xl font-bold text-primary leading-none mb-0.5">
                   {stat.value}
                 </p>
-                <p className="text-xs text-white/50 uppercase tracking-wide">
+                <p className="text-xs text-white/55 uppercase tracking-wide">
                   {stat.label}
                 </p>
               </div>
@@ -68,15 +69,15 @@ const PriorityBanner = () => {
 
           {/* CTAs */}
           <div className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4">
-            <button className="bg-primary text-black font-semibold px-5 sm:px-6 py-2.5 sm:py-3
+            <button className="bg-gradient-to-r from-primary to-[#d9ff8e] text-secondary font-semibold px-5 sm:px-6 py-2.5 sm:py-3
                                rounded-full text-sm sm:text-base
-                               hover:brightness-105 active:scale-95 transition-all duration-200 shadow-lg">
+                               hover:brightness-105 active:scale-95 transition-all duration-200 shadow-[0_18px_35px_rgba(184,244,93,0.28)]">
               Become a Merchant
             </button>
-            <button className="border border-primary text-primary font-semibold
+            <button className="border border-white/15 bg-white/10 text-white font-semibold
                                px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-sm sm:text-base
-                               hover:bg-primary hover:text-black active:scale-95
-                               transition-all duration-200">
+                               hover:bg-white/14 active:scale-95
+                               transition-all duration-200 backdrop-blur-md">
               Earn with ZapShift
             </button>
           </div>

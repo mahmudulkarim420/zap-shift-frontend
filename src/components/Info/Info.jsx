@@ -25,10 +25,12 @@ const infoItems = [
 
 const Info = () => {
   return (
-    <section>
+    <section className="relative overflow-hidden rounded-[32px] border border-border/70 bg-white/80 px-4 py-12 shadow-[0_24px_80px_-48px_rgba(8,60,64,0.45)] backdrop-blur-sm sm:px-6 sm:py-16 lg:px-8">
+      <div className="pointer-events-none absolute -left-20 top-0 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
 
       {/* Section Header */}
-      <div className="mb-10 sm:mb-12">
+      <div className="relative mb-10 sm:mb-12">
         <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-2">
           Why Choose Us
         </p>
@@ -42,21 +44,21 @@ const Info = () => {
         {infoItems.map((item, index) => (
           <div
             key={index}
-            className="group bg-white border border-gray-100 rounded-2xl p-6 sm:p-8
+            className="group relative overflow-hidden rounded-[1.5rem] border border-border/70 bg-gradient-to-br from-white to-[#f4faf6] p-6 shadow-[0_12px_30px_-24px_rgba(8,60,64,0.35)]
                        flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 lg:gap-10
-                       hover:shadow-xl hover:border-primary/20 hover:-translate-y-0.5
+                       hover:shadow-[0_24px_50px_-30px_rgba(8,60,64,0.4)] hover:border-primary/30 hover:-translate-y-0.5
                        transition-all duration-300 ease-in-out overflow-hidden relative"
           >
             {/* Step watermark */}
-            <span className="absolute top-4 right-5 text-7xl font-black text-gray-50
-                             group-hover:text-primary/5 transition-colors duration-300
+            <span className="absolute top-4 right-5 text-7xl font-black text-secondary/5
+                             group-hover:text-primary/10 transition-colors duration-300
                              select-none leading-none">
               {String(index + 1).padStart(2, '0')}
             </span>
 
             {/* Image */}
             <div className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32
-                            bg-primary/5 group-hover:bg-primary/10 rounded-2xl
+                            bg-gradient-to-br from-primary/10 to-accent/10 group-hover:from-primary/20 group-hover:to-accent/15 rounded-2xl border border-primary/10
                             flex items-center justify-center transition-colors duration-300 p-4">
               <Image
                 src={item.img}
@@ -70,13 +72,13 @@ const Info = () => {
             {/* Text */}
             <div className="text-center sm:text-left flex-1 min-w-0">
               <span className="inline-block text-xs font-semibold uppercase tracking-widest
-                               text-primary bg-primary/10 px-3 py-1 rounded-full mb-3">
+                               text-secondary bg-secondary/5 px-3 py-1 rounded-full mb-3 border border-secondary/10">
                 {item.tag}
               </span>
               <h3 className="font-bold text-secondary text-xl sm:text-2xl mb-2 leading-snug">
                 {item.title}
               </h3>
-              <p className="text-gray-500 text-sm sm:text-base leading-relaxed max-w-xl">
+              <p className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-xl">
                 {item.desc}
               </p>
             </div>

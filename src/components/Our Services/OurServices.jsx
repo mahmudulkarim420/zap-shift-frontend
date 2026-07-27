@@ -30,10 +30,11 @@ const services = [
 
 const OurServices = () => {
   return (
-    <section className="relative overflow-hidden rounded-[28px] bg-secondary px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <section className="relative overflow-hidden rounded-[34px] border border-white/10 bg-[linear-gradient(135deg,#062e32_0%,#0a4549_58%,#051d20_100%)] px-4 py-12 shadow-[0_30px_90px_-35px_rgba(8,60,64,0.9)] sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       {/* Background glow */}
       <div className="pointer-events-none absolute -left-20 top-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-10 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(184,244,93,0.12),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(255,138,76,0.08),_transparent_24%)]" />
 
       <div className="relative">
         {/* Section Header */}
@@ -58,18 +59,18 @@ const OurServices = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-[24px] border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/60 hover:bg-primary hover:shadow-[0_20px_50px_rgba(0,0,0,0.18)] sm:p-7"
+              className="group relative overflow-hidden rounded-[24px] border border-white/10 bg-white/10 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/50 hover:bg-white/95 hover:shadow-[0_24px_60px_-30px_rgba(8,60,64,0.7)] sm:p-7"
             >
               {/* top gradient accent */}
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary/0 via-primary to-primary/0 opacity-60" />
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary/0 via-primary to-accent/0 opacity-70" />
 
               {/* Watermark number */}
-              <span className="pointer-events-none absolute right-4 top-3 select-none text-6xl font-black leading-none text-white/5 transition-colors duration-300 group-hover:text-black/10 sm:right-5 sm:top-4">
+              <span className="pointer-events-none absolute right-4 top-3 select-none text-6xl font-black leading-none text-white/5 transition-colors duration-300 group-hover:text-secondary/10 sm:right-5 sm:top-4">
                 {String(index + 1).padStart(2, '0')}
               </span>
 
               {/* Icon */}
-              <div className="relative mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/10 transition-all duration-300 group-hover:border-black/10 group-hover:bg-black/10">
+              <div className="relative mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/10 transition-all duration-300 group-hover:border-primary/20 group-hover:bg-primary/10">
                 <Image
                   src={icon}
                   alt={service.title}
@@ -80,18 +81,18 @@ const OurServices = () => {
               </div>
 
               {/* Content */}
-              <h3 className="mb-3 pr-10 text-lg font-bold leading-snug text-white transition-colors duration-300 group-hover:text-black sm:text-xl">
+              <h3 className="mb-3 pr-10 text-lg font-bold leading-snug text-white transition-colors duration-300 group-hover:text-secondary sm:text-xl">
                 {service.title}
               </h3>
 
-              <p className="text-sm leading-7 text-white/65 transition-colors duration-300 group-hover:text-black/75 sm:text-base">
+              <p className="text-sm leading-7 text-white/70 transition-colors duration-300 group-hover:text-slate-600 sm:text-base">
                 {service.desc}
               </p>
 
               {/* bottom accent */}
               <div className="mt-6 flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-primary transition-colors duration-300 group-hover:bg-black" />
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50 transition-colors duration-300 group-hover:text-black/60">
+                <span className="h-2 w-2 rounded-full bg-primary transition-colors duration-300 group-hover:bg-accent" />
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/55 transition-colors duration-300 group-hover:text-slate-500">
                   ZapShift Service
                 </span>
               </div>

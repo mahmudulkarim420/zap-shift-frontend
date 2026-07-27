@@ -4,7 +4,7 @@ import { FaStar } from 'react-icons/fa';
 
 const ReviewCard = ({ review }) => {
   return (
-    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-[2.5rem] p-8 sm:p-10 shadow-lg min-h-[320px] flex flex-col justify-between group hover:border-primary/50 transition-all duration-300">
+    <div className="bg-gradient-to-b from-white to-[#f4faf6] border border-border/70 rounded-[2.5rem] p-8 sm:p-10 shadow-[0_20px_60px_-30px_rgba(8,60,64,0.35)] min-h-[320px] flex flex-col justify-between group hover:border-primary/40 transition-all duration-300">
       <div>
         {/* Quote & Stars */}
         <div className="flex justify-between items-start mb-6">
@@ -17,13 +17,13 @@ const ReviewCard = ({ review }) => {
         </div>
 
         {/* Review Text */}
-        <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-8 italic">
-          "{review.comment}"
+        <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-8 italic">
+          &ldquo;{review.comment}&rdquo;
         </p>
       </div>
 
       <div className="space-y-6">
-        <div className="border-t border-dashed border-gray-200"></div>
+        <div className="border-t border-dashed border-border"></div>
 
         {/* Author Info */}
         <div className="flex items-center gap-4">

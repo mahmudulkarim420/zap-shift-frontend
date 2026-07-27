@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaArrowRight, FaBars, FaTimes, FaUser, FaChartPie, FaSignOutAlt } from "react-icons/fa";
@@ -15,21 +15,17 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
-
   const isActive = (path) => pathname === path;
 
   const linkClass = (path) =>
     isActive(path)
-      ? "bg-primary text-black font-semibold px-4 py-2 rounded-lg"
-      : "text-gray-600 hover:text-primary px-4 py-2 transition";
+      ? "bg-primary text-secondary font-semibold px-4 py-2 rounded-xl shadow-[0_10px_25px_rgba(184,244,93,0.25)]"
+      : "text-slate-600 hover:text-secondary px-4 py-2 transition";
 
   const mobileLinkClass = (path) =>
     isActive(path)
-      ? "bg-primary text-black font-semibold px-4 py-3 rounded-lg block"
-      : "text-gray-600 hover:text-primary hover:bg-gray-50 px-4 py-3 rounded-lg block transition";
+      ? "bg-primary text-secondary font-semibold px-4 py-3 rounded-xl block shadow-[0_10px_25px_rgba(184,244,93,0.2)]"
+      : "text-slate-600 hover:text-secondary hover:bg-slate-50 px-4 py-3 rounded-xl block transition";
 
   const navItems = [
     { href: "/services", label: "Services" },
@@ -39,7 +35,7 @@ const Navbar = () => {
   ];
 
   if (!isLoaded) return (
-    <nav className="mt-5 rounded-2xl bg-white px-5 py-3 shadow-sm">
+    <nav className="mt-5 rounded-[1.5rem] border border-border/70 bg-white/80 px-5 py-3 shadow-[0_18px_55px_-35px_rgba(8,60,64,0.45)] backdrop-blur-xl">
       <div className="flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shrink-0">
@@ -49,13 +45,13 @@ const Navbar = () => {
             Zap<span className="text-primary">Shift</span>
           </h1>
         </Link>
-        <div className="animate-pulse bg-gray-100 h-10 w-24 rounded-xl"></div>
+        <div className="animate-pulse bg-slate-100 h-10 w-24 rounded-xl"></div>
       </div>
     </nav>
   );
 
   return (
-    <nav className="mt-5 rounded-2xl bg-white px-5 py-3 shadow-sm relative z-50">
+    <nav className="mt-5 rounded-[1.5rem] border border-border/70 bg-white/80 px-5 py-3 shadow-[0_18px_55px_-35px_rgba(8,60,64,0.45)] backdrop-blur-xl relative z-50">
       <div className="flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -85,7 +81,7 @@ const Navbar = () => {
               <div className="relative group">
                 {/* Profile Icon / Bubble */}
                 <button 
-                  className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-primary font-black text-sm border-2 border-primary/20 group-hover:border-primary transition cursor-pointer overflow-hidden"
+                  className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-primary font-black text-sm border-2 border-primary/20 shadow-[0_10px_25px_rgba(8,60,64,0.22)] group-hover:border-primary transition cursor-pointer overflow-hidden"
                 >
                   {user?.image ? (
                     <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
@@ -96,15 +92,15 @@ const Navbar = () => {
 
                 {/* Dropdown Menu (Hover Triggered) */}
                 <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 w-48">
-                  <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 overflow-hidden">
-                    <div className="px-4 py-3 border-b border-gray-50 mb-1">
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Welcome</p>
+                  <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/60 p-2 overflow-hidden">
+                    <div className="px-4 py-3 border-b border-slate-50 mb-1">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Welcome</p>
                       <p className="text-sm font-extrabold text-secondary truncate">{user?.name || 'User'}</p>
                     </div>
                     
                     <Link
                       href="/dashboard"
-                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-primary/10 hover:text-secondary rounded-xl transition-all"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-primary/10 hover:text-secondary rounded-xl transition-all"
                     >
                       <FaChartPie className="text-primary" />
                       Dashboard
@@ -112,7 +108,7 @@ const Navbar = () => {
                     
                     <Link
                       href="/profile"
-                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-primary/10 hover:text-secondary rounded-xl transition-all"
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-primary/10 hover:text-secondary rounded-xl transition-all"
                     >
                       <FaUser className="text-primary" />
                       Profile
@@ -132,13 +128,13 @@ const Navbar = () => {
               <>
                 <Link
                   href="/sign-in"
-                  className="rounded-xl border border-gray-200 bg-gray-50 px-5 py-2.5 text-xs font-bold text-gray-500 transition hover:bg-gray-100 hover:text-secondary uppercase tracking-widest"
+                  className="rounded-xl border border-border bg-slate-50 px-5 py-2.5 text-xs font-bold text-slate-500 transition hover:bg-white hover:text-secondary uppercase tracking-widest"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/sign-up"
-                  className="rounded-xl border border-gray-200 bg-gray-50 px-5 py-2.5 text-xs font-bold text-gray-500 transition hover:bg-gray-100 hover:text-secondary uppercase tracking-widest"
+                  className="rounded-xl border border-border bg-slate-50 px-5 py-2.5 text-xs font-bold text-slate-500 transition hover:bg-white hover:text-secondary uppercase tracking-widest"
                 >
                   Sign Up
                 </Link>
@@ -148,12 +144,12 @@ const Navbar = () => {
 
           <Link
             href="/rider"
-            className="rounded-xl bg-primary px-4 py-2 font-semibold text-black shadow"
+            className="rounded-xl bg-primary px-4 py-2 font-semibold text-secondary shadow-[0_12px_30px_rgba(184,244,93,0.28)]"
           >
             Be a Rider
           </Link>
 
-          <div className="-rotate-45 rounded-full bg-secondary p-3 text-primary">
+          <div className="-rotate-45 rounded-full bg-secondary p-3 text-primary shadow-[0_12px_25px_rgba(8,60,64,0.2)]">
             <FaArrowRight />
           </div>
         </div>
@@ -163,7 +159,7 @@ const Navbar = () => {
           <button
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
-            className="rounded-lg p-2 transition hover:bg-gray-100"
+            className="rounded-lg p-2 transition hover:bg-slate-100"
           >
             {isOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
           </button>
@@ -172,7 +168,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="mt-3 rounded-2xl bg-white p-4 shadow lg:hidden">
+        <div className="mt-3 rounded-2xl border border-border/60 bg-white/95 backdrop-blur-xl p-4 shadow lg:hidden">
           <ul className="flex flex-col gap-2">
             {navItems.map((item) => (
               <li key={item.href}>
@@ -211,9 +207,9 @@ const Navbar = () => {
 
           <div className="mt-4 flex flex-col gap-3">
             {isSignedIn ? (
-              <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 pt-4">
+              <div className="flex items-center justify-between px-4 py-2 border-t border-border pt-4">
                 <div className="flex flex-col">
-                   <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Account</span>
+                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Account</span>
                    <span className="text-sm font-extrabold text-secondary">{user?.name || 'User'}</span>
                 </div>
                 <button 
@@ -228,14 +224,14 @@ const Navbar = () => {
                 <Link
                   href="/sign-in"
                   onClick={() => setIsOpen(false)}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50 font-bold uppercase text-xs tracking-widest"
+                  className="w-full rounded-xl border border-border px-4 py-2 text-center text-slate-500 transition hover:bg-slate-50 font-bold uppercase text-xs tracking-widest"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/sign-up"
                   onClick={() => setIsOpen(false)}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-2 text-center text-gray-500 transition hover:bg-gray-50 font-bold uppercase text-xs tracking-widest"
+                  className="w-full rounded-xl border border-border px-4 py-2 text-center text-slate-500 transition hover:bg-slate-50 font-bold uppercase text-xs tracking-widest"
                 >
                   Sign Up
                 </Link>
@@ -245,7 +241,7 @@ const Navbar = () => {
             <Link
               href="/rider"
               onClick={() => setIsOpen(false)}
-              className="w-full rounded-xl bg-primary px-4 py-2 text-center font-semibold text-black shadow"
+              className="w-full rounded-xl bg-primary px-4 py-2 text-center font-semibold text-secondary shadow"
             >
               Be a Rider
             </Link>

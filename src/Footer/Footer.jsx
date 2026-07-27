@@ -4,7 +4,9 @@ import { FaXTwitter } from 'react-icons/fa6';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0B0B0B] text-white px-5 py-10 sm:px-10 sm:py-14 mb-5 rounded-2xl">
+    <footer className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,#072b2f_0%,#031619_100%)] px-5 py-10 text-white shadow-[0_30px_90px_-35px_rgba(8,60,64,0.9)] mb-5 sm:px-10 sm:py-14">
+      <div className="pointer-events-none absolute -left-20 top-0 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
       <div className="max-w-6xl mx-auto text-center">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2">
@@ -23,10 +25,10 @@ const Footer = () => {
         </p>
 
         {/* Divider */}
-        <div className="my-6 border-t border-dashed border-gray-700"></div>
+        <div className="my-6 border-t border-dashed border-white/10"></div>
 
         {/* Links */}
-        <div className="flex flex-wrap justify-center gap-6 text-sm sm:text-base text-gray-300">
+        <div className="flex flex-wrap justify-center gap-6 text-sm sm:text-base text-slate-300">
           <Link href="/services" className="hover:text-primary transition">
             Services
           </Link>
@@ -48,14 +50,14 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <div className="my-6 border-t border-dashed border-gray-700"></div>
+        <div className="my-6 border-t border-dashed border-white/10"></div>
 
         {/* Social Icons */}
         <div className="flex justify-center gap-4">
-          <a className="bg-[#1DA1F2] p-2 rounded-full hover:scale-110 transition">
+          <a className="bg-white/10 text-white p-2 rounded-full hover:scale-110 transition border border-white/10 backdrop-blur-md">
             <FaLinkedinIn />
           </a>
-          <a className="bg-white text-black p-2 rounded-full hover:scale-110 transition">
+          <a className="bg-white text-secondary p-2 rounded-full hover:scale-110 transition">
             <FaXTwitter />
           </a>
           <a className="bg-[#1877F2] p-2 rounded-full hover:scale-110 transition">

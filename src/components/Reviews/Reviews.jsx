@@ -42,26 +42,28 @@ const Reviews = () => {
 
   // Loading skeleton matching card shape
   const SkeletonReview = () => (
-    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-10 h-72 animate-pulse">
-      <div className="w-8 h-8 bg-white/20 rounded-lg mb-4" />
-      <div className="h-4 bg-white/10 rounded-full w-full mb-2" />
-      <div className="h-4 bg-white/10 rounded-full w-4/5 mb-2" />
-      <div className="h-4 bg-white/10 rounded-full w-2/3 mb-6" />
+    <div className="bg-gradient-to-b from-white to-[#f4faf6] border border-border/70 rounded-3xl p-10 h-72 animate-pulse shadow-[0_18px_40px_-28px_rgba(8,60,64,0.35)]">
+      <div className="w-8 h-8 bg-primary/15 rounded-lg mb-4" />
+      <div className="h-4 bg-slate-100 rounded-full w-full mb-2" />
+      <div className="h-4 bg-slate-100 rounded-full w-4/5 mb-2" />
+      <div className="h-4 bg-slate-100 rounded-full w-2/3 mb-6" />
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-white/20" />
+        <div className="w-10 h-10 rounded-full bg-slate-100" />
         <div className="space-y-2">
-          <div className="h-3 bg-white/20 rounded-full w-24" />
-          <div className="h-2 bg-white/10 rounded-full w-16" />
+          <div className="h-3 bg-slate-100 rounded-full w-24" />
+          <div className="h-2 bg-slate-100 rounded-full w-16" />
         </div>
       </div>
     </div>
   );
 
   return (
-    <section className="relative w-full">
+    <section className="relative w-full overflow-hidden rounded-[32px] border border-border/70 bg-white/80 px-4 py-12 shadow-[0_24px_80px_-48px_rgba(8,60,64,0.45)] backdrop-blur-sm sm:px-6 sm:py-16 lg:px-8">
+      <div className="pointer-events-none absolute -left-20 top-0 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
 
       {/* Section Header */}
-      <div className="text-center mb-10 sm:mb-12">
+      <div className="relative text-center mb-10 sm:mb-12">
         <div className="flex justify-center mb-4">
           <Image
             src={customerImg}
@@ -78,7 +80,7 @@ const Reviews = () => {
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-secondary mb-4">
           What Our Customers Are Saying
         </h2>
-        <p className="text-gray-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+        <p className="text-slate-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
           Thousands of merchants and customers trust ZapShift for fast,
           safe, and reliable delivery across Bangladesh — every single day.
         </p>
@@ -140,8 +142,8 @@ const Reviews = () => {
           <div className="reviews-pagination flex justify-center gap-2 mt-2" />
         </div>
       ) : (
-        <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-           <p className="text-gray-400 font-bold uppercase tracking-widest text-sm">No reviews found yet</p>
+        <div className="text-center py-20 bg-gradient-to-b from-white to-[#f5fbf6] rounded-3xl border-2 border-dashed border-border">
+           <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">No reviews found yet</p>
         </div>
       )}
 
@@ -150,9 +152,9 @@ const Reviews = () => {
         <button
           ref={prevRef}
           aria-label="Previous review"
-          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-gray-200 bg-white
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-border bg-white
                      text-secondary flex items-center justify-center shadow-sm
-                     hover:border-primary hover:text-primary
+                     hover:border-primary hover:text-primary hover:bg-primary/5
                      active:scale-95 transition-all duration-200"
         >
           <FaArrowLeft className="text-sm" />
@@ -161,8 +163,8 @@ const Reviews = () => {
         <button
           ref={nextRef}
           aria-label="Next review"
-          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary text-black
-                     flex items-center justify-center shadow-md
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary text-secondary
+                     flex items-center justify-center shadow-[0_14px_30px_rgba(184,244,93,0.28)]
                      hover:brightness-105 active:scale-95
                      transition-all duration-200"
         >

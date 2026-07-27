@@ -35,19 +35,21 @@ const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section>
+    <section className="relative overflow-hidden rounded-[32px] border border-border/70 bg-white/80 px-4 py-12 shadow-[0_24px_80px_-48px_rgba(8,60,64,0.45)] backdrop-blur-sm sm:px-6 sm:py-16 lg:px-8">
+      <div className="pointer-events-none absolute -left-20 top-0 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
 
       {/* Section Header */}
-      <div className="max-w-2xl mx-auto text-center mb-10 sm:mb-12">
+      <div className="relative max-w-2xl mx-auto text-center mb-10 sm:mb-12">
         <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-2">
           Got Questions?
         </p>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-secondary mb-4">
           Frequently Asked Questions
         </h2>
-        <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
+        <p className="text-slate-500 text-sm sm:text-base leading-relaxed">
           Everything you need to know about shipping, delivery, and working
-          with ZapShift. Can't find your answer? Our support team is available 24/7.
+          with ZapShift. Can&apos;t find your answer? Our support team is available 24/7.
         </p>
       </div>
 
@@ -60,8 +62,8 @@ const FAQSection = () => {
               key={index}
               className={`border rounded-2xl overflow-hidden transition-all duration-300
                 ${isOpen
-                  ? 'border-primary/40 bg-primary/5 shadow-md'
-                  : 'border-gray-100 bg-white hover:border-primary/20 hover:shadow-sm shadow-sm'
+                  ? 'border-primary/30 bg-primary/10 shadow-[0_18px_45px_-28px_rgba(8,60,64,0.4)]'
+                  : 'border-border/70 bg-white hover:border-primary/20 hover:shadow-[0_14px_35px_-24px_rgba(8,60,64,0.25)] shadow-sm'
                 }`}
             >
               <button
@@ -70,7 +72,7 @@ const FAQSection = () => {
                 aria-expanded={isOpen}
               >
                 <span className={`text-sm sm:text-base font-semibold leading-snug transition-colors duration-200
-                  ${isOpen ? 'text-secondary' : 'text-gray-700'}`}>
+                  ${isOpen ? 'text-secondary' : 'text-slate-700'}`}>
                   {faq.question}
                 </span>
 
@@ -78,8 +80,8 @@ const FAQSection = () => {
                 <span className={`shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center
                                   transition-all duration-300
                                   ${isOpen
-                    ? 'bg-primary text-black rotate-180'
-                    : 'bg-gray-100 text-gray-500'
+                    ? 'bg-primary text-secondary rotate-180'
+                    : 'bg-slate-100 text-slate-500'
                   }`}>
                   <ChevronDown className="w-4 h-4" />
                 </span>
@@ -89,7 +91,7 @@ const FAQSection = () => {
               <div className={`grid transition-all duration-300 ease-in-out
                               ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                 <div className="overflow-hidden">
-                  <p className="px-5 sm:px-6 pb-5 text-sm sm:text-base text-gray-500 leading-relaxed">
+                  <p className="px-5 sm:px-6 pb-5 text-sm sm:text-base text-slate-500 leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>
@@ -105,7 +107,7 @@ const FAQSection = () => {
                            font-semibold px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-sm sm:text-base
                            hover:brightness-110 active:scale-95 transition-all duration-200 shadow-lg">
           View All FAQs
-          <span className="w-6 h-6 bg-primary text-black rounded-full flex items-center justify-center -rotate-45 shrink-0">
+          <span className="w-6 h-6 bg-primary text-secondary rounded-full flex items-center justify-center -rotate-45 shrink-0">
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
               <path d="M2 8L8 2M8 2H3M8 2V7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
