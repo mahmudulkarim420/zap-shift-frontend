@@ -50,25 +50,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (account.provider === "google") {
+      if (account?.provider === "google") {
         try {
+          const idToken = account.id_token;
+          if (!idToken) {
+            console.error("Google sign-in error: No id_token provided by Google account");
+            return false;
+          }
+
           const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/google-login`, {
-            name: user.name,
-            email: user.email,
-            image: user.image,
+            idToken,
           });
 
           if (response.data && response.data.success) {
             const backendData = response.data.data;
             user.accessToken = response.data.token || backendData?.token;
-            user.role = backendData?.user?.role || backendData?.role;
-            user.image = backendData?.user?.image || backendData?.image || user.image;
-            user.phone = backendData?.user?.phone || backendData?.phone || "";
+            user.id = backendData?.id || backendData?._id || backendData?.user?.id || backendData?.user?._id;
+            user.role = backendData?.role || backendData?.user?.role || "user";
+            user.image = backendData?.image || backendData?.user?.image || user.image;
+            user.phone = backendData?.phone || backendData?.user?.phone || "";
             return true;
           }
           return false;
         } catch (error) {
-          console.error("Express backend Google sync failed:", error.response?.data || error.message);
+          console.error("Express backend Google sync failed:", error.response?.data?.message || error.message);
           return false;
         }
       }

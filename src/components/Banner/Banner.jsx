@@ -60,22 +60,22 @@ const Banner = () => {
         ))}
 
         {/* CTA Content */}
-        <div className="absolute inset-0 z-20 flex items-end px-4 pb-5 sm:px-6 sm:pb-7 md:px-10 md:pb-10 lg:px-14 lg:pb-14 xl:px-16">
+        <div className="absolute inset-0 z-20 flex items-end px-3 pb-3 sm:px-6 sm:pb-7 md:px-10 md:pb-10 lg:px-14 lg:pb-14 xl:px-16">
           <div className="w-full max-w-4xl">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[11px] font-semibold tracking-wider text-white/90 backdrop-blur-md sm:text-xs">
+            <div className="mb-1.5 sm:mb-3 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2 py-0.5 text-[9.5px] font-semibold tracking-wider text-white/90 backdrop-blur-md sm:px-4 sm:py-2 sm:text-xs">
               Fast · Secure · Nationwide
             </div>
-            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 md:gap-4">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 md:gap-4">
               <Link
                 href="/track-order"
-                className="rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-[0_4px_16px_rgba(0,183,149,0.25)] transition-all duration-200 hover:bg-primary-hover active:scale-[0.97] sm:px-6 sm:py-3 md:text-base"
+                className="rounded-full bg-primary px-2.5 py-1 text-[10.5px] font-semibold text-white shadow-[0_4px_16px_rgba(0,183,149,0.25)] transition-all duration-200 hover:bg-primary-hover active:scale-[0.97] sm:px-5 sm:py-2.5 md:px-6 md:py-3 sm:text-sm md:text-base"
               >
                 Track Your Parcel
               </Link>
 
               <Link
                 href="/sign-up"
-                className="rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white/20 active:scale-[0.97] sm:px-6 sm:py-3 md:text-base"
+                className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10.5px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:bg-white/20 active:scale-[0.97] sm:px-5 sm:py-2.5 md:px-6 md:py-3 sm:text-sm md:text-base"
               >
                 Get Started
               </Link>
@@ -86,7 +86,7 @@ const Banner = () => {
 
               <Link
                 href="/rider"
-                className="rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-[#1F2937] shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all duration-200 hover:bg-[#F8FAFC] active:scale-[0.97] sm:px-6 sm:py-3 md:text-base"
+                className="rounded-full bg-white px-2.5 py-1 text-[10.5px] font-semibold text-[#1F2937] shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all duration-200 hover:bg-[#F8FAFC] active:scale-[0.97] sm:px-5 sm:py-2.5 md:px-6 md:py-3 sm:text-sm md:text-base"
               >
                 Be a Rider
               </Link>

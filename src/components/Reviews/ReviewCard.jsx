@@ -3,7 +3,7 @@ import { Quote, Star } from "lucide-react";
 
 const ReviewCard = ({ review }) => {
   return (
-    <div className="bg-white border border-[#E5E7EB] rounded-3xl p-7 sm:p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] min-h-[300px] flex flex-col justify-between group hover:border-primary/30 hover:shadow-[0_8px_24px_-8px_rgba(0,183,149,0.1)] transition-all duration-300">
+    <div className="bg-white border border-[#E5E7EB] rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] min-h-[260px] sm:min-h-[300px] flex flex-col justify-between group hover:border-primary/30 hover:shadow-[0_8px_24px_-8px_rgba(0,183,149,0.1)] transition-all duration-300">
       <div>
         {/* Quote & Stars */}
         <div className="flex justify-between items-start mb-5">

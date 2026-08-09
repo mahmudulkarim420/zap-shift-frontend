@@ -70,7 +70,7 @@ export default function MyEarnings() {
                   Your growth is <span className="text-[#C8FF65]">accelerating</span>.
                 </h1>
                 <p className="mt-4 text-white/60 text-base font-medium max-w-md leading-relaxed">
-                  Excellent work this week! You've maintained a 98% delivery success rate. Keep up the momentum to unlock gold-tier bonuses.
+                  Excellent work this week! You&apos;ve maintained a 98% delivery success rate. Keep up the momentum to unlock gold-tier bonuses.
                 </p>
               </div>
 

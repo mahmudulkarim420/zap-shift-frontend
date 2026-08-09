@@ -191,7 +191,7 @@ export default function ServicesPage() {
           </h2>
           <p className="text-gray-500 text-sm sm:text-base leading-relaxed mb-8">
             Our platform is designed to give you a smooth delivery experience,
-            whether you're sending one package or managing daily business orders.
+            whether you&apos;re sending one package or managing daily business orders.
           </p>
 
           <ul className="space-y-3 sm:space-y-4">

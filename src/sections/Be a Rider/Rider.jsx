@@ -111,12 +111,12 @@ const Rider = () => {
               </h1>
               <p className="text-white/60 text-sm sm:text-base leading-relaxed">
                 Earn on your own schedule, deliver in your local area, and be
-                part of Bangladesh's fastest-growing delivery network.
+                part of Bangladesh&apos;s fastest-growing delivery network.
               </p>
             </div>
 
             {/* Stat pills */}
-            <div className="flex gap-3 sm:gap-4 shrink-0 flex-wrap">
+            <div className="grid grid-cols-3 sm:flex gap-2 sm:gap-4 w-full lg:w-auto shrink-0">
               {[
                 { value: '500+', label: 'Active Riders' },
                 { value: '64', label: 'Districts' },
@@ -124,12 +124,12 @@ const Rider = () => {
               ].map(stat => (
                 <div
                   key={stat.label}
-                  className="bg-white/5 border border-white/10 rounded-2xl px-4 sm:px-5 py-3 text-center"
+                  className="bg-white/5 border border-white/10 rounded-2xl px-2.5 sm:px-5 py-2.5 sm:py-3 text-center"
                 >
-                  <p className="text-lg sm:text-xl font-extrabold text-primary leading-none mb-0.5">
+                  <p className="text-base sm:text-xl font-extrabold text-primary leading-none mb-0.5">
                     {stat.value}
                   </p>
-                  <p className="text-xs text-white/50 uppercase tracking-wide">{stat.label}</p>
+                  <p className="text-[10px] sm:text-xs text-white/50 uppercase tracking-wide truncate">{stat.label}</p>
                 </div>
               ))}
             </div>

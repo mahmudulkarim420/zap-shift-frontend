@@ -95,7 +95,7 @@ export default function BookParcel() {
         <div>
           <p className="text-xs font-black uppercase tracking-widest text-primary mb-1">Parcel Booking</p>
           <h1 className="text-2xl font-extrabold text-secondary">Book a New Delivery</h1>
-          <p className="text-sm text-gray-400 mt-1">Fill in the receiver details and we'll handle the rest.</p>
+          <p className="text-sm text-gray-400 mt-1">Fill in the receiver details and we&apos;ll handle the rest.</p>
         </div>
 
         <div className="grid lg:grid-cols-[1fr_320px] gap-6">

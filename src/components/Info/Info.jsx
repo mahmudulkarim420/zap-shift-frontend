@@ -44,28 +44,28 @@ const Info = () => {
       </div>
 
       {/* Info Cards */}
-      <div className="space-y-4 sm:space-y-5">
+      <div className="space-y-3.5 sm:space-y-5">
         {infoItems.map((item, index) => {
           const Icon = item.icon;
           return (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]
-                         flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 lg:gap-10
+              className="group relative overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white p-4 sm:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]
+                         flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-8 lg:gap-10
                          hover:shadow-[0_8px_24px_-8px_rgba(0,183,149,0.1)] hover:border-primary/30 hover:-translate-y-0.5
                          transition-all duration-300 ease-in-out"
             >
               {/* Step watermark */}
-              <span className="absolute top-4 right-5 text-7xl font-black text-[#F3F4F6]
+              <span className="absolute top-3 right-4 sm:top-4 sm:right-5 text-5xl sm:text-7xl font-black text-[#F3F4F6]
                                group-hover:text-primary/8 transition-colors duration-300
                                select-none leading-none pointer-events-none">
                 {String(index + 1).padStart(2, '0')}
               </span>
 
               {/* Image */}
-              <div className="shrink-0 w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32
+              <div className="shrink-0 w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32
                               bg-primary/6 group-hover:bg-primary/10 rounded-2xl border border-primary/10
-                              flex items-center justify-center transition-colors duration-300 p-4">
+                              flex items-center justify-center transition-colors duration-300 p-3 sm:p-4">
                 <Image
                   src={item.img}
                   alt={item.title}
@@ -77,15 +77,15 @@ const Info = () => {
 
               {/* Text */}
               <div className="text-center sm:text-left flex-1 min-w-0">
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wider
-                                 text-primary bg-primary/8 px-3 py-1 rounded-full mb-3 border border-primary/10">
-                  <Icon className="w-3.5 h-3.5" />
+                <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold tracking-wider
+                                 text-primary bg-primary/8 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full mb-2 sm:mb-3 border border-primary/10">
+                  <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   {item.tag}
                 </span>
-                <h3 className="font-bold text-[#1F2937] text-xl sm:text-2xl mb-2 leading-snug">
+                <h3 className="font-bold text-[#1F2937] text-lg sm:text-2xl mb-1.5 sm:mb-2 leading-snug">
                   {item.title}
                 </h3>
-                <p className="text-[#6B7280] text-sm sm:text-base leading-relaxed max-w-xl">
+                <p className="text-[#6B7280] text-xs sm:text-base leading-relaxed max-w-xl">
                   {item.desc}
                 </p>
               </div>

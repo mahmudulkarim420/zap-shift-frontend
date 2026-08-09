@@ -84,17 +84,17 @@ const Pricing = () => {
             </div>
 
             {/* Info cards */}
-            <div className="flex gap-3 sm:gap-4 shrink-0">
+            <div className="grid grid-cols-3 sm:flex gap-2 sm:gap-4 w-full lg:w-auto shrink-0">
               {infoCards.map(card => (
                 <div
                   key={card.label}
-                  className="bg-white/5 border border-white/10 rounded-2xl px-4 sm:px-5 py-3 text-center"
+                  className="bg-white/5 border border-white/10 rounded-2xl px-2.5 sm:px-5 py-2.5 sm:py-3 text-center"
                 >
-                  <p className="text-lg sm:text-xl font-extrabold text-primary leading-none mb-0.5">
+                  <p className="text-base sm:text-xl font-extrabold text-primary leading-none mb-0.5">
                     {card.value}
                   </p>
-                  <p className="text-xs text-white/60 font-medium">{card.label}</p>
-                  <p className="text-xs text-white/30">{card.sub}</p>
+                  <p className="text-[11px] sm:text-xs text-white/60 font-medium">{card.label}</p>
+                  <p className="text-[10px] sm:text-xs text-white/30 truncate">{card.sub}</p>
                 </div>
               ))}
             </div>

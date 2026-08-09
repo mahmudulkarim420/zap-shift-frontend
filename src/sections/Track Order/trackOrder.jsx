@@ -47,24 +47,24 @@ export default function TrackOrder({ initialId = "" }) {
   }, [initialId]);
 
   return (
-    <div className="max-w-3xl mx-auto py-4">
+    <div className="max-w-3xl mx-auto py-4 px-2 sm:px-0">
       {/* Search Input */}
-      <div className="bg-white rounded-3xl border border-gray-100 shadow-xl shadow-black/5 p-8 mb-10">
-        <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-4">
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-xl shadow-black/5 p-4 sm:p-8 mb-8 sm:mb-10">
+        <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="relative flex-1">
-            <FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" />
+            <FaSearch className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               value={id}
               onChange={(e) => setId(e.target.value)}
               placeholder="Enter Tracking ID (e.g. ZS-123456)"
-              className="w-full h-14 pl-12 pr-4 rounded-2xl border border-gray-100 bg-gray-50 focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all font-bold text-secondary uppercase placeholder:normal-case placeholder:font-medium"
+              className="w-full h-12 sm:h-14 pl-11 sm:pl-12 pr-4 rounded-2xl border border-gray-100 bg-gray-50 focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all font-bold text-sm sm:text-base text-secondary uppercase placeholder:normal-case placeholder:font-medium"
             />
           </div>
           <button
             type="submit"
             disabled={loading || !id}
-            className="h-14 px-10 bg-primary text-black font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-primary/20 hover:brightness-105 active:scale-95 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale"
+            className="h-12 sm:h-14 px-6 sm:px-10 bg-primary text-black font-black uppercase tracking-widest text-xs sm:text-sm rounded-2xl shadow-lg shadow-primary/20 hover:brightness-105 active:scale-95 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale"
           >
             {loading ? <FaSpinner className="animate-spin" /> : "Track"}
           </button>
@@ -74,29 +74,29 @@ export default function TrackOrder({ initialId = "" }) {
 
       {/* Results */}
       {result && (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           
           {/* Main Info Card */}
-          <div className="bg-secondary rounded-[2.5rem] p-8 sm:p-10 text-white shadow-2xl relative overflow-hidden">
+          <div className="bg-secondary rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 text-white shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full -mr-32 -mt-32 blur-[100px]"></div>
             
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-6 relative z-10">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-6 relative z-10">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-2">Live Status</p>
-                <h2 className="text-3xl font-black mb-1 capitalize">{(STATUS_MAP[result.parcel.status]?.label || result.parcel.status).replace('_', ' ')}</h2>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-1 sm:mb-2">Live Status</p>
+                <h2 className="text-2xl sm:text-3xl font-black mb-1 capitalize">{(STATUS_MAP[result.parcel.status]?.label || result.parcel.status).replace('_', ' ')}</h2>
                 <p className="text-white/40 text-xs font-bold uppercase tracking-widest">Tracking ID: {result.parcel.trackingId}</p>
               </div>
-              <div className="text-right sm:text-right w-full sm:w-auto border-t sm:border-0 border-white/5 pt-6 sm:pt-0">
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-2">Destination</p>
-                <p className="text-xl font-bold">{result.parcel.receiver?.district || "N/A"}</p>
+              <div className="text-left sm:text-right w-full sm:w-auto border-t sm:border-0 border-white/5 pt-4 sm:pt-0">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-1 sm:mb-2">Destination</p>
+                <p className="text-lg sm:text-xl font-bold">{result.parcel.receiver?.district || "N/A"}</p>
                 <p className="text-white/40 text-xs mt-1">{result.parcel.receiver?.address}</p>
               </div>
             </div>
           </div>
 
           {/* Timeline */}
-          <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-8 sm:p-10">
-            <h3 className="text-lg font-black text-secondary uppercase tracking-widest mb-10 flex items-center gap-3">
+          <div className="bg-white rounded-2xl sm:rounded-[2.5rem] border border-gray-100 shadow-sm p-5 sm:p-10">
+            <h3 className="text-base sm:text-lg font-black text-secondary uppercase tracking-widest mb-6 sm:mb-10 flex items-center gap-3">
               <FaClock className="text-primary" /> Delivery Journey
             </h3>
             

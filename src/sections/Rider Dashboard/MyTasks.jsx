@@ -226,7 +226,7 @@ export default function MyTasks() {
               </div>
               <h3 className="text-xl font-black text-gray-900">Your task list is empty</h3>
               <p className="text-sm text-gray-500 mt-2 max-w-xs text-center leading-relaxed">
-                You haven't accepted any parcels yet. Head over to available deliveries to find work.
+                You haven&apos;t accepted any parcels yet. Head over to available deliveries to find work.
               </p>
               <button 
                 onClick={() => window.location.href = '/dashboard/rider/available-deliveries'}
